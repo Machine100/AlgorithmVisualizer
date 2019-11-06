@@ -12,4 +12,7 @@ export class DisplayComponent implements OnInit {
   ngOnInit() {
   }
 
+  onClick(row:string, column:string) {
+    
+  }
 }

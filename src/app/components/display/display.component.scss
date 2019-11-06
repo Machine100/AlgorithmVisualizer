@@ -8,12 +8,38 @@
 }
 .grid-item{
     border-color: grey;
-    border-style: solid;
+    
 }
 
+.button-panel-wrapper{
+    display: grid;
+    border-style: solid;
+    border-color: yellow;
+   max-width: 350px;
+}
+
+@keyframes fillIn {
+    from {
+        background-color: black;
+    }
+    to {
+        background-color: blue;
+    }
+}
+
+.filled{ 
+    background-color: blue; 
+    animation: fillIn 3s ease-in infinite;
+}
+.start-cell {
+    background-color: green;
+}
+.finish-cell {
+    background-color: green;
+}
+
+.player-here{ background-color: orange; }
 .none{ border-style: none; }
-.filled{ background-color: blue; }
-.player-here{ background-color: green; }
 
 .r{ 
     border-color: grey;
@@ -28,73 +54,4 @@
 }
 .d{ border-color: grey;
     border-bottom-style:solid;
-}
-.ud{
-    border-color: grey;
-    border-top-style:solid;
-    border-bottom-style:solid;
-}
-.ld{
-    border-color: grey;
-    border-left-style:solid;
-    border-bottom-style:solid;
-}
-.lu{
-    border-color: grey;
-    border-top-style:solid;
-    border-left-style:solid;
-}
-.rd{
-    border-color: grey;
-    border-bottom-style:solid;
-    border-right-style:solid;
-}
-.ru{
-    border-color: grey;
-    border-top-style:solid;
-    border-right-style:solid;
-}
-.rl{
-    border-color: grey;
-    border-left-style:solid;
-    border-right-style:solid;
-}
-.lud{
-    border-color: grey;
-    border-top-style:solid;
-    border-bottom-style:solid;
-    border-left-style:solid;
-}
-.rud{
-    border-color: grey;
-    border-top-style:solid;
-    border-bottom-style:solid;
-    border-right-style:solid;
-}
-.rld{
-    border-color: grey;
-    border-bottom-style:solid;
-    border-left-style:solid;
-    border-right-style:solid;
-}
-.rlu{
-    border-color: grey;
-    border-top-style:solid;
-    border-left-style:solid;
-    border-right-style:solid;
-}
-.rlud{
-    border-color: grey;
-    border-top-style:solid;
-    border-bottom-style:solid;
-    border-left-style:solid;
-    border-right-style:solid;
-}
-
-.control-panel-wrapper{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-style: solid;
-    border-color: yellow;
-   max-width: 350px;
 }
