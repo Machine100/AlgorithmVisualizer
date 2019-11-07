@@ -8,12 +8,19 @@ export class DisplaycontrolService {
 
   constructor() { }
 
+  startRow: number
+  startColumn: number
   cursorRow: number                     
   cursorColumn: number
   board: Cell[][]       //a 2D array of objects representing each space on the maze
 
-  private _getId(row:number, column:number) {
+  _getId(row:number, column:number) {
     return row.toString() + column.toString()
+  }
+
+  getRowColumn(id:string) {       // given a cell Id
+    let result:string[] = id.split('')
+    return (result)                // return the row and column
   }
 
   initBoard() {
@@ -26,6 +33,7 @@ export class DisplaycontrolService {
             id: row.toString()+column.toString(),
             visited: false,
             filled: false,
+            onStack: true,
             startCell: false,
             finishCell: false,
             wallUp: true,
@@ -83,14 +91,22 @@ export class DisplaycontrolService {
 
   markStart (row:number, column:number) {
     const id:string = this._getId(row, column)
-    this.board[row][column].startCell = true                //update state
-    document.getElementById(id).classList.add('start-cell')  //update element
+    this.board[row][column].startCell = true                //update display state
+    document.getElementById(id).classList.add('start-cell') //update display element
+    this.startRow = row                                     //update central state store
+    this.startColumn = column
   }
 
   markFinish (row:number, column:number) {
     const id:string = this._getId(row, column)
-    this.board[row][column].finishCell = true               //update state
-    document.getElementById(id).classList.add('finish-cell')  //update element 
+    this.board[row][column].finishCell = true               //update display state
+    document.getElementById(id).classList.add('finish-cell')//update display element 
+    this.startRow = row                                     //update central state store
+    this.startColumn = column
   }  
+
+  markVisited (row:number, column:number) {
+    this.board[this.cursorRow][this.cursorColumn].visited = true  //FLASH VISITED
+  }
 
 }

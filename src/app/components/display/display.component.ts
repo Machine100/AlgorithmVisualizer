@@ -13,6 +13,5 @@ export class DisplayComponent implements OnInit {
   }
 
   onClick(row:string, column:string) {
-    
   }
 }
