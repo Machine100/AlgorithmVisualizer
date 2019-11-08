@@ -19,8 +19,11 @@ export class DisplaycontrolService {
   }
 
   getRowColumn(id:string) {       // given a cell Id
-    let result:string[] = id.split('')
-    return (result)                // return the row and column
+    const result:string[] = id.split('')
+    const location:number[] = []
+    location[0] = Number(result[0])
+    location[1] = Number(result[1])
+    return (location)                // return the row and column
   }
 
   initBoard() {
@@ -34,6 +37,7 @@ export class DisplaycontrolService {
             visited: false,
             filled: false,
             onStack: true,
+            hasCursor: false,
             startCell: false,
             finishCell: false,
             wallUp: true,
@@ -109,4 +113,35 @@ export class DisplaycontrolService {
     this.board[this.cursorRow][this.cursorColumn].visited = true  //FLASH VISITED
   }
 
+  markPoppedOffStack () {
+
+  }
+
+  moveCursor(destinationRow:number, destinationColumn:number){
+    this.cursorRow = destinationRow                                  //update state
+    this.cursorColumn = destinationColumn
+    this.board[destinationRow][destinationColumn].hasCursor = true   //update view
+    console.log('cursorRow',this.cursorRow,'cursorColumn:',this.cursorColumn)
+  }
+
+  knockoutWalls(direction:string){
+    console.log('at knockoutWalls','direction:',direction)
+    switch (direction) {
+      case 'down':
+        this.board[this.cursorRow][this.cursorColumn].wallDown = false
+        this.board[this.cursorRow + 1][this.cursorColumn].wallUp = false
+        break
+      case 'right':
+        this.board[this.cursorRow][this.cursorColumn].wallRight = false
+        this.board[this.cursorRow][this.cursorColumn + 1].wallLeft = false
+        break
+      case 'up':
+        this.board[this.cursorRow][this.cursorColumn].wallUp = false
+        this.board[this.cursorRow - 1][this.cursorColumn].wallDown = false
+        break
+      case 'left':
+        this.board[this.cursorRow][this.cursorColumn].wallLeft = false
+        this.board[this.cursorRow][this.cursorColumn - 1].wallRight = false
+    }
+  }
 }

@@ -3,6 +3,7 @@ export class Cell {
     visited:    boolean
     filled:     boolean
     onStack:    boolean
+    hasCursor:  boolean
     startCell:  boolean
     finishCell: boolean
     wallUp:     boolean

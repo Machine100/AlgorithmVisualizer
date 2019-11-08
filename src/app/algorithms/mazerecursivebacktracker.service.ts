@@ -13,6 +13,7 @@ export class MazerecursivebacktrackerService {
   onFireoffAlgo(){
 //  board must have already been created
 //  check for valid start&end position
+    this.stack = []
     this.displayControl.cursorRow = this.displayControl.startRow            //NOT A SETTER
     this.displayControl.cursorColumn = this.displayControl.startColumn      //NOT A SETTER
     let keepgoing:boolean = true
@@ -22,20 +23,23 @@ export class MazerecursivebacktrackerService {
     }
   }
 
-  private _stepAlgo() {
+    _stepAlgo(){
+    let cursorId:string = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     let chosenDirection:string = 'none'
     while (chosenDirection === 'none') {
       chosenDirection = this._chooseMove(); console.log(chosenDirection)
       if (chosenDirection === 'none') { 
-        this._backTrack()                     
-        if (this.stack.length === 0) return 'complete' //After backtrack, maze is complete if stack is empty
+        this._backTrack()                     //on returning from backtrack
+        if (this.stack.length === 0) return 'complete' //maze is complete
       }
-    }  
-    this.knockoutWalls(chosenDirection)
-    this.moveCursor(chosenDirection)
+    //this.drawCursor()
+    const destinationLocation:number[] = this._getDestinationLocation(chosenDirection)
+    this.displayControl.knockoutWalls(chosenDirection)
+    this.displayControl.moveCursor(destinationLocation[0], destinationLocation[1])
     this.stack.push(cursorId)                //push current position onto stack
     console.log('--------------------')
   }
+    }  
 
   private _chooseMove() {
     let resultDown:boolean = false
@@ -97,22 +101,41 @@ export class MazerecursivebacktrackerService {
     else return true
   }
 
-  private _backTrack(){
-    this.displayControl.markVisited(this.displayControl.cursorRow, this.displayControl.cursorColumn)
-    //let result:string = this.stack.pop() ; console.log ('result:', result) //pop stack
-    let result:string = this.popStack()
-    if (this.stack.length === 0) {console.log('mazecomplete'); return}       //maze is complete
-    let poppedRowColumn:string[] = result.split('') ; console.log('poppedRowColumn',poppedRowColumn)
-    this.displayControl.cursorRow = Number(poppedRowColumn[0])            //set master cursor position to stackpop position
-    this.displayControl.cursorColumn = Number(poppedRowColumn[1])     
+  private _getDestinationLocation(direction:string) {
+    let destination:number[] = []  
+    if (direction==='down') { 
+      destination[0] = this.displayControl.cursorRow  + 1
+      destination[1] = this.displayControl.cursorColumn
+    }
+    if (direction==='up') { 
+      destination[0] = this.displayControl.cursorRow  - 1
+      destination[1] = this.displayControl.cursorColumn
+    }
+    if (direction==='left') { 
+      destination[0] = this.displayControl.cursorRow
+      destination[1] = this.displayControl.cursorColumn - 1
+    }
+    if (direction==='right') { 
+      destination[0] = this.displayControl.cursorRow
+      destination[1] = this.displayControl.cursorColumn +1
+    }
+    return destination
   }
 
-    popStack () {
+  private _backTrack(){
+    this.displayControl.markVisited(this.displayControl.cursorRow, this.displayControl.cursorColumn)
+    const poppedLocation:number[] = this._popStack()
+    if (this.stack.length === 0) {console.log('mazecomplete'); return}       //maze is complete
+    //this.displayControl.cursorColumn = Number(poppedRowColumn[1])     
+    this.displayControl.moveCursor(poppedLocation[0],poppedLocation[1])   //set master cursor position to stackpop position
+  }
+
+  private _popStack () {
     const poppedId:string = this.stack.pop()
-    const poppedRowColumn:number[] = this.displayControl.getRowColumn(poppedId)
-    this.displayControl.board[poppedRowColumn[0]][poppedRowColumn[1]].onStack = false  //update display state
-    document.getElementById(poppedId).classList.remove('on-stack') //update display element 
-    return poppedId
+    const poppedLocation:number[] = this.displayControl.getRowColumn(poppedId)
+    //this.displayControl.board[poppedRowColumn[0]][poppedRowColumn[1]].onStack = false  //update display state
+    //document.getElementById(poppedId).classList.remove('on-stack') //update display element 
+    return poppedLocation
   }
 
   pushStack (id:string) {
@@ -121,4 +144,5 @@ export class MazerecursivebacktrackerService {
     this.displayControl.board[poppedRowColumn[0]][poppedRowColumn[1]].onStack = true  //update display state
     document.getElementById(id).classList.add('on-stack') //update display element 
   }
+
 }

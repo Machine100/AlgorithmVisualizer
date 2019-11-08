@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DisplaycontrolService } from 'src/app/displaycontrol.service';
 import { BreadthfirstService } from 'src/app/algorithms/breadthfirst.service';
+import { MazerecursivebacktrackerService } from 'src/app/algorithms/mazerecursivebacktracker.service';
 
 @Component({
   selector: 'app-buttons',
@@ -11,7 +12,8 @@ export class ButtonsComponent implements OnInit {
 
   constructor(
     private displayControl:DisplaycontrolService,
-    private breadthfirst:BreadthfirstService) {}
+    private breadthfirst:BreadthfirstService,
+    private mazeRecursiveBacktracker: MazerecursivebacktrackerService) {}
 
   ngOnInit() {
     this.displayControl.initBoard()
@@ -38,5 +40,9 @@ export class ButtonsComponent implements OnInit {
 
   onStartBreadthFirst() {
     this.breadthfirst.runAlgo()
+  }
+
+  onStartMazeRecursiveBacktracker () {
+    this.mazeRecursiveBacktracker.onFireoffAlgo()
   }
 }
