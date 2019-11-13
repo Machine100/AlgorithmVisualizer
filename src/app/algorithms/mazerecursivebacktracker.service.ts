@@ -1,5 +1,6 @@
 import { Injectable, RootRenderer } from '@angular/core';
 import { DisplaycontrolService } from 'src/app/displaycontrol.service';
+import { resolve } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class MazerecursivebacktrackerService {
 
   onInitStack(){
     this.stack = []
+    this.displayControl.markVisited(this.displayControl.cursorRow,this.displayControl.cursorColumn) // mark inital position as visited
   }
   
   onFireoffAlgo(){
@@ -20,11 +22,26 @@ export class MazerecursivebacktrackerService {
 //  Must have stack initialized
     //this.displayControl.moveCursor (this.displayControl.startRow, this.displayControl.startColumn)
     let keepgoing:boolean = true
- //   while (keepgoing) {        //comment here    // step algo until maze generation is complete
-      let result:string = this._stepAlgo()
+//  console.log('this._stepAlgo:',this._stepAlgo)   
+//  setTimeout(()=>{console.log('for setTimeout: this._stepAlgo:',this._stepAlgo);this._stepAlgo()},1000)     //need to use arrow funciton to preserve value of this
+
+    (async function mainLoop() {
+     await this.delaytimer()
+     console.log('delaytimer finished')
+    })()                                  //IIFE
+
+//  while (keepgoing) {        //comment here    // step algo until maze generation is complete
+    let result:string = 'needs to be return value of stepAlgo  or implement finished flag'
       if (result === 'complete') {keepgoing = false}  
- //   }                          // and here to implement stepping
+//  }                          // and here to implement stepping
   }
+
+delaytimer(){
+  return new Promise((resolve) => {
+    setTimeout(()=>{ console.log('done waiting');resolve }, 1000)
+  })
+}
+
 
     _stepAlgo(){                         
     let cursorId:string = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
@@ -41,6 +58,7 @@ export class MazerecursivebacktrackerService {
     this.displayControl.moveCursor(destinationLocation[0], destinationLocation[1])
     cursorId = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     this.stack.push(cursorId)                //push destination onto stack
+    this.displayControl.markOnStack(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     this.displayControl.redrawBoard()
     console.log('stack:', this.stack)
     console.log('--------------------')

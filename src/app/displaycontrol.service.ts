@@ -89,17 +89,17 @@ export class DisplaycontrolService {
     }
   }
 
-  // fillCell (row:number, column:number) {
-  //   const id:string = this._getId(row, column)
-  //   this.board[row][column].filled = true                   //update state  
-  //   document.getElementById(id).classList.add('filled')     //update element
-  // }
+  fillCell (row:number, column:number) {
+    const id:string = this._getId(row, column)
+    this.board[row][column].filled = true                   //update state  
+    document.getElementById(id).classList.add('filled')     //update element
+  }
 
-  // clearCell (row:number, column:number) {
-  //   const id:string = this._getId(row, column)
-  //   this.board[row][column].filled = true                   //update state  
-  //   document.getElementById(id).classList.remove('filled')  //update element
-  // }
+  clearCell (row:number, column:number) {
+    const id:string = this._getId(row, column)
+    this.board[row][column].filled = true                   //update state  
+    document.getElementById(id).classList.remove('filled')  //update element
+  }
 
   markStart (row:number, column:number) {
     const id:string = this.getId(row, column)
@@ -125,12 +125,10 @@ export class DisplaycontrolService {
 
   markOffStack (row:number, column:number) {
      this.board[row][column].onStack = false               //update display state
-     //this.redrawBoard()
   }
 
   markOnStack (row:number, column:number) {
      this.board[row][column].onStack = true                //update display state
-     //this.redrawBoard()
   }
 
   moveCursor(destinationRow:number, destinationColumn:number){
