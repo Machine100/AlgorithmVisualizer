@@ -1,6 +1,6 @@
 import { Injectable, RootRenderer } from '@angular/core';
 import { DisplaycontrolService } from 'src/app/displaycontrol.service';
-import { resolve } from 'q';
+import { resolve, delay } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,20 @@ export class MazerecursivebacktrackerService {
     this.displayControl.markVisited(this.displayControl.cursorRow,this.displayControl.cursorColumn) // mark inital position as visited
   }
   
-  onFireoffAlgo(){
-//  board must have already been created
+  asynconFireoffAlgo(){
+    
+    function delayTimer(){
+      return new Promise((resolve) => {
+      setTimeout(()=>{ console.log('done waiting');resolve }, 1000)
+    })
+
+    async function step() {
+      console.log('begin')
+      await delayTimer()    //await KW expects a promise to be returned and then waits for it to resolve
+      console.log('end')
+      }
+
+    //  board must have already been created
 //  check for valid start&end position
 //  Must have stack initialized
     //this.displayControl.moveCursor (this.displayControl.startRow, this.displayControl.startColumn)
@@ -25,10 +37,6 @@ export class MazerecursivebacktrackerService {
 //  console.log('this._stepAlgo:',this._stepAlgo)   
 //  setTimeout(()=>{console.log('for setTimeout: this._stepAlgo:',this._stepAlgo);this._stepAlgo()},1000)     //need to use arrow funciton to preserve value of this
 
-    (async function mainLoop() {
-     await this.delaytimer()
-     console.log('delaytimer finished')
-    })()                                  //IIFE
 
 //  while (keepgoing) {        //comment here    // step algo until maze generation is complete
     let result:string = 'needs to be return value of stepAlgo  or implement finished flag'
@@ -36,10 +44,7 @@ export class MazerecursivebacktrackerService {
 //  }                          // and here to implement stepping
   }
 
-delaytimer(){
-  return new Promise((resolve) => {
-    setTimeout(()=>{ console.log('done waiting');resolve }, 1000)
-  })
+
 }
 
 
