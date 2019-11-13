@@ -20,9 +20,9 @@ export class ButtonsComponent implements OnInit {
   }
 
   onInit() {
-    console.log('I been clicked')
+    console.log('At buttons onInit()')
     this.displayControl.redrawBoard()
-    this.displayControl.fillCell(1, 1)
+  //  this.displayControl.fillCell(1, 1)
   }
 
   onStartStop() {
@@ -44,5 +44,9 @@ export class ButtonsComponent implements OnInit {
 
   onStartMazeRecursiveBacktracker () {
     this.mazeRecursiveBacktracker.onFireoffAlgo()
+  }
+
+  onInitStack(){
+    this.mazeRecursiveBacktracker.onInitStack()
   }
 }
