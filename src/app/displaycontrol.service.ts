@@ -90,13 +90,13 @@ export class DisplaycontrolService {
   }
 
   fillCell (row:number, column:number) {
-    const id:string = this._getId(row, column)
+    const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
     document.getElementById(id).classList.add('filled')     //update element
   }
 
   clearCell (row:number, column:number) {
-    const id:string = this._getId(row, column)
+    const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
     document.getElementById(id).classList.remove('filled')  //update element
   }

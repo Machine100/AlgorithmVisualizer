@@ -10,52 +10,44 @@ export class MazerecursivebacktrackerService {
   constructor(private displayControl:DisplaycontrolService) { }
 
   stack: string[]
+  algoFinished: boolean
 
   onInitStack(){
     this.stack = []
+    this.displayControl.moveCursor (this.displayControl.startRow, this.displayControl.startColumn)
     this.displayControl.markVisited(this.displayControl.cursorRow,this.displayControl.cursorColumn) // mark inital position as visited
   }
-  
-  asynconFireoffAlgo(){
-    
-    function delayTimer(){
-      return new Promise((resolve) => {
-      setTimeout(()=>{ console.log('done waiting');resolve }, 1000)
+
+  private _delayTimer() {
+    return new Promise((resolve) => {
+      setTimeout ( ()=> {
+        console.log('promise now resolved')
+        resolve()
+      },120)
     })
-
-    async function step() {
-      console.log('begin')
-      await delayTimer()    //await KW expects a promise to be returned and then waits for it to resolve
-      console.log('end')
-      }
-
-    //  board must have already been created
-//  check for valid start&end position
-//  Must have stack initialized
-    //this.displayControl.moveCursor (this.displayControl.startRow, this.displayControl.startColumn)
-    let keepgoing:boolean = true
-//  console.log('this._stepAlgo:',this._stepAlgo)   
-//  setTimeout(()=>{console.log('for setTimeout: this._stepAlgo:',this._stepAlgo);this._stepAlgo()},1000)     //need to use arrow funciton to preserve value of this
-
-
-//  while (keepgoing) {        //comment here    // step algo until maze generation is complete
-    let result:string = 'needs to be return value of stepAlgo  or implement finished flag'
-      if (result === 'complete') {keepgoing = false}  
-//  }                          // and here to implement stepping
+  }
+  
+  async onFireoffAlgo(){
+//  board must have already been created, Must have stack initialized, Need check for valid start&end position
+   
+    this.algoFinished = false
+    while (!this.algoFinished) {                            // step algo until maze generation is complete
+      this._stepAlgo()
+      await this._delayTimer()
+      this.displayControl.redrawBoard()
+      console.log('---single algo cycle complete---')
+    }
   }
 
-
-}
-
-
-    _stepAlgo(){                         
+    private async _stepAlgo(){                         
     let cursorId:string = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     let chosenDirection:string = 'none'
     while (chosenDirection === 'none') {
       chosenDirection = this._chooseMove(); console.log(chosenDirection)
       if (chosenDirection === 'none') { 
-        this._backTrack()                     //on returning from backtrack
-        if (this.stack.length === 0) return 'complete' //maze is complete
+        this._backTrack()
+        await this._delayTimer()
+        if (this.stack.length === 0) { this.algoFinished = true; return }            //maze is complete
       }
     }
     const destinationLocation:number[] = this._getDestinationLocation(chosenDirection)
@@ -64,8 +56,6 @@ export class MazerecursivebacktrackerService {
     cursorId = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     this.stack.push(cursorId)                //push destination onto stack
     this.displayControl.markOnStack(this.displayControl.cursorRow, this.displayControl.cursorColumn)
-    this.displayControl.redrawBoard()
-    console.log('stack:', this.stack)
     console.log('--------------------')
     }
   
@@ -154,10 +144,10 @@ export class MazerecursivebacktrackerService {
 
   private _backTrack(){
     console.log ('at _backTrack')
+    this._delayTimer()
     this.displayControl.markVisited(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     const poppedLocation:number[] = this._popStack()
-    if (this.stack.length === 0) {console.log('mazecomplete'); return}       //maze is complete
-    //this.displayControl.cursorColumn = Number(poppedRowColumn[1])     
+    if (this.stack.length === 0) {console.log('mazecomplete'); this.algoFinished = true; return}       //maze is complete
     this.displayControl.moveCursor(poppedLocation[0],poppedLocation[1])   //set master cursor position to stackpop position
   }
 
