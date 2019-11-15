@@ -30,16 +30,12 @@ export class ButtonsComponent implements OnInit {
     this.displayControl.markFinish(6,6)
   }
 
-  onFillAll() {
-    this.breadthfirst.fillAll()
+  onInitBreadth() {
+    this.breadthfirst.init()
   }
   
-  onClearAll() {
-    this.breadthfirst.clearAll()
-  }
-
-  onStartBreadthFirst() {
-    this.breadthfirst.runAlgo()
+  onStepBreadth() {
+    this.breadthfirst.stepAlgo()
   }
 
   onStartMazeRecursiveBacktracker () {
