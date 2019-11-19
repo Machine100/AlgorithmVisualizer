@@ -8,7 +8,7 @@ export class BreadthfirstService {
 
 constructor(private displayControl:DisplaycontrolService) { }
 
-visitedStack: string[]          // ids of visited nodes
+// visitedStack: string[]          // ids of visited nodes      :      data now tracked on the board.
 sourceStack: string[]           // ids of nodes from where algo found the node
 stateStack: string[]            // state of the node
 traversalStack: string[]        // main output of the search algorithm
@@ -21,6 +21,7 @@ init() {
   this.stateStack = []
   this.traversalStack = []
   this.stackpointer = 0
+                                // set first entry in traversalStack to start position
 }
 
 runAlgo() {
@@ -29,31 +30,57 @@ runAlgo() {
 
 stepAlgo() {
   console.log('at stepAlgo()')
-              this.findNeighbors()              // find all neighbors of stack pointer on board at displayControl
+                                             
+    const unvisitedNeighbors: boolean[] = this.findUnvisitedNeighbors() 
                                                 // put all unvisited neighbors onto traversalStack
-                                                // mark this node as visited in visitedStack
+                                                // mark this node as visited on the board
                                                 // if traversalStack is empty, traversal is complete
                                                 // move stack pointer to next stack location
 }
 
-findNeighbors() {
+findUnvisitedNeighbors() {
     let resultDown:boolean = false
     let resultRight:boolean = false
     let resultUp:boolean = false
     let resultLeft:boolean = false
-    if (this.displayControl.cursorRow    != 9) {resultDown = this._checkDown()}    // check that moves are within 
-    if (this.displayControl.cursorColumn != 9) {resultRight = this._checkRight()}  // the outside boundrary and then
-    if (this.displayControl.cursorRow    != 0) {resultUp = this._checkUp()}        // each direction
-    if (this.displayControl.cursorColumn != 0) {resultLeft = this._checkLeft()
+    resultDown = this._checkDown()           // validate each direction
+    resultRight = this._checkRight()
+    resultUp = this._checkUp()      
+    resultLeft = this._checkLeft()
+    const resultArray:boolean[] = [resultDown, resultRight, resultUp, resultLeft]
+    return resultArray
 }
+
   private _checkDown(){
-    let onStack:boolean = false
+    let validMove:boolean = true
     let cell = this.displayControl.board[this.displayControl.cursorRow + 1][this.displayControl.cursorColumn]
-    this.stack.forEach(stackItem=>{        //check if id is on stack
-      if (stackItem === cell.id) {onStack=true}
-    })   
-    if ( (cell.visited)||(onStack) ) {return false}
-    else return true
+    if (this.displayControl.cursorRow = 9) { validMove = false } //check for board boundary
+    if (cell.visited === true) { validMove = false }      //check if id is already visited
+    return validMove 
+  }
+  
+  private _checkRight(){
+    let validMove:boolean = true
+    let cell = this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn + 1]
+    if (this.displayControl.cursorColumn = 9) { validMove = false } //check for board boundary
+    if (cell.visited === true) { validMove = false }      //check if id is already visited
+    return validMove 
+  }
+
+  private _checkUp(){
+    let validMove:boolean = true
+    let cell = this.displayControl.board[this.displayControl.cursorRow - 1][this.displayControl.cursorColumn]
+    if (this.displayControl.cursorRow = 0) { validMove = false } //check for board boundary
+    if (cell.visited === true) { validMove = false }      //check if id is already visited
+    return validMove 
+  }
+  
+  private _checkLeft(){
+    let validMove:boolean = true
+    let cell = this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn - 1]
+    if (this.displayControl.cursorColumn = 0) { validMove = false } //check for board boundary
+    if (cell.visited === true) { validMove = false }      //check if id is already visited
+    return validMove 
   }
 
 }
