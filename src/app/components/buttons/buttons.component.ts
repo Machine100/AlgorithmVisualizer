@@ -45,4 +45,8 @@ export class ButtonsComponent implements OnInit {
   onInitStack(){
     this.mazeRecursiveBacktracker.onInitStack()
   }
+
+  onFindShortestPath(){
+    this.breadthfirst.findShortestPath()
+  }
 }
