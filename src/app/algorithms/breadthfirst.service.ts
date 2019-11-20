@@ -37,8 +37,8 @@ stepAlgo() {
     this.displayControl.markVisited(this.displayControl.cursorRow,this.displayControl.cursorColumn)  // mark current node as visited on the board
                                                 // if traversalStack is empty, traversal is complete
     ++this.stackpointer                         // move stack pointer to next stack location
-    const destinationCursorId:string = this.traversalStack[this.stackpointer]
-    const destinationCursorRowCol:number[] = this.displayControl.getRowColumn(destinationCursorId)
+    const nextLocation:string = this.traversalStack[this.stackpointer]
+    const destinationCursorRowCol:number[] = this.displayControl.getRowColumn(nextLocation)
     this.displayControl.moveCursor(destinationCursorRowCol[0],destinationCursorRowCol[1])
   }
 
@@ -52,13 +52,12 @@ processNeighbors () {
 }
 
   private _processDown () {
-    if (this.displayControl.cursorRow = 9) { return } //check for board boundary
+    if (this.displayControl.cursorRow === 9) { console.log ('down rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow + 1
     const destinationColumn = this.displayControl.cursorColumn
     console.log('for down, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    
     if (cell.visited === true) { validMove = false }      //check if id is already visited
     if (validMove) {
       this.displayControl.markOnStack(destinationRow, destinationColumn)
@@ -69,13 +68,12 @@ processNeighbors () {
   }
   
   private _processRight () {
-    if (this.displayControl.cursorColumn = 9) { return } //check for board boundary
+    if (this.displayControl.cursorColumn === 9) { console.log ('right rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow
     const destinationColumn = this.displayControl.cursorColumn + 1
     console.log('for Right, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    
     if (cell.visited === true) { validMove = false }      //check if id is already visited
     if (validMove) {
       this.displayControl.markOnStack(destinationRow, destinationColumn)
@@ -86,13 +84,12 @@ processNeighbors () {
   }
 
   private _processUp () {
-    if (this.displayControl.cursorRow = 0) { return } //check for board boundary
+    if (this.displayControl.cursorRow === 0) { console.log ('up rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow - 1
     const destinationColumn = this.displayControl.cursorColumn
     console.log('for up, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    
     if (cell.visited === true) { validMove = false }      //check if id is already visited
     if (validMove) {
       this.displayControl.markOnStack(destinationRow, destinationColumn)
@@ -103,13 +100,12 @@ processNeighbors () {
   }
   
   private _processLeft () {
-    if (this.displayControl.cursorColumn = 0) { return } //check for board boundary
+    if (this.displayControl.cursorColumn === 0) { console.log ('left rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow
     const destinationColumn = this.displayControl.cursorColumn - 1
     console.log('for left, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    
     if (cell.visited === true) { validMove = false }      //check if id is already visited
     if (validMove) {
       this.displayControl.markOnStack(destinationRow, destinationColumn)
