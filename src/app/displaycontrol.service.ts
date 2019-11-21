@@ -14,11 +14,11 @@ export class DisplaycontrolService {
   cursorColumn: number
   board: Cell[][]       //a 2D array of objects representing each space on the maze
 
-  getId(row:number, column:number) {
+  getId(row:number, column:number) {                           // returns an id given a row/column 
     return row.toString() + column.toString()
   }
 
-  getRowColumn(id:string) {       // given a cell Id
+  getRowColumn(id:string) {                                    // returns a row/column given an id
     const result:string[] = id.split('')
     const location:number[] = []
     location[0] = Number(result[0])
@@ -37,6 +37,8 @@ export class DisplaycontrolService {
           this.board[row][column] = {
             id: row.toString()+column.toString(),
             visited: false,
+            discovered: false,
+            explored: false,
             filled: false,
             onStack: false,
             hasCursor: false,
@@ -67,6 +69,9 @@ export class DisplaycontrolService {
         let onStack:boolean = this.board[row][column].onStack
         let startCell:boolean = this.board[row][column].startCell 
         let finishCell:boolean = this.board[row][column].finishCell
+        let visited:boolean = this.board[row][column].visited
+        let discovered:boolean = this.board[row][column].discovered
+        let explored:boolean = this.board[row][column].explored
         if (up) { document.getElementById(id).classList.add('u') }
         if (!up) { document.getElementById(id).classList.remove('u') }
         if (down) { document.getElementById(id).classList.add('d') }
@@ -85,6 +90,12 @@ export class DisplaycontrolService {
         if (!startCell) { document.getElementById(id).classList.remove('start-cell') }
         if (finishCell) { document.getElementById(id).classList.add('finish-cell') }
         if (!finishCell) { document.getElementById(id).classList.remove('finish-cell') }
+        if (visited) { document.getElementById(id).classList.add('visited') }
+        if (!visited) { document.getElementById(id).classList.remove('visited') }
+        if (discovered) { document.getElementById(id).classList.add('discovered') }
+        if (!discovered) { document.getElementById(id).classList.remove('discovered') }
+        if (explored) { document.getElementById(id).classList.add('explored') }
+        if (!explored) { document.getElementById(id).classList.remove('explored') }
       }
     }
   }
@@ -92,13 +103,15 @@ export class DisplaycontrolService {
   fillCell (row:number, column:number) {
     const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
-    document.getElementById(id).classList.add('filled')     //update element
+    //document.getElementById(id).classList.add('filled')     //update element
+    this.redrawBoard()
   }
 
   clearCell (row:number, column:number) {
     const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
-    document.getElementById(id).classList.remove('filled')  //update element
+    //document.getElementById(id).classList.remove('filled')  //update element
+    this.redrawBoard()
   }
 
   markStart (row:number, column:number) {
@@ -119,16 +132,30 @@ export class DisplaycontrolService {
 
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
-    const id = this.getId(row,column)
-    document.getElementById(id).classList.add('visited')
+    //const id = this.getId(row,column)
+    //document.getElementById(id).classList.add('visited')
+    this.redrawBoard()
+  }
+
+  markDiscovered (row:number, column:number) {
+    console.log('at markDiscovered', row, column)
+     this.board[row][column].discovered = true               //update display state
+     this.redrawBoard()
+  }
+
+  markExplored (row:number, column:number) {
+     this.board[row][column].explored = true               //update display state
+     this.redrawBoard()
   }
 
   markOffStack (row:number, column:number) {
      this.board[row][column].onStack = false               //update display state
+     this.redrawBoard()
   }
 
   markOnStack (row:number, column:number) {
      this.board[row][column].onStack = true                //update display state
+     this.redrawBoard()
   }
 
   moveCursor(destinationRow:number, destinationColumn:number){

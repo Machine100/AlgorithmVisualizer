@@ -34,7 +34,7 @@ export class MazerecursivebacktrackerService {
     while (!this.algoFinished) {                            // step algo until maze generation is complete
       this._stepAlgo()
       await this._delayTimer()
-      this.displayControl.redrawBoard()
+      //this.displayControl.redrawBoard()
       console.log('---single algo cycle complete---')
     }
   }

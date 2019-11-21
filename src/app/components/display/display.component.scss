@@ -20,7 +20,7 @@
 
 @keyframes fillIn {
     from {
-        background-color: black;
+        ;
     }
     to {
         background-color: blue;
@@ -28,9 +28,18 @@
 }
 .on-stack{
     background-color: cyan;
+    
 }
  .visited{ 
      background-color: blue; 
+     animation: fillIn 1s ease-in;
+ }
+  .discovered{ 
+     background-color: purple; 
+     animation: fillIn 1s ease-in;
+ }
+  .explored{ 
+     background-color: teal; 
      animation: fillIn 1s ease-in;
  }
 .start-cell {
@@ -39,8 +48,11 @@
 .finish-cell {
     background-color: lightpink;
 }
+.has-cursor { 
+    background-color: orange;
+    
+}
 
-.has-cursor { background-color: orange; }
 .none{ border-style: none; }
 
 .r{ 

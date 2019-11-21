@@ -47,7 +47,7 @@ exploreNeighbors () {
     this._processRight()
     this._processUp()      
     this._processLeft()
-    this.displayControl.markVisited(this.displayControl.cursorRow,this.displayControl.cursorColumn)  // mark current node as visited on the board
+    this.displayControl.markExplored(this.displayControl.cursorRow,this.displayControl.cursorColumn)
 }
 
   private _processDown () {
@@ -59,9 +59,9 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for down, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.onStack === true) { validMove = false }      //check if id is already explored
-    if (validMove) {
-      this.displayControl.markOnStack(destinationRow, destinationColumn)
+    if (cell.discovered === true) { validMove = false }      //check if destination node is already discovered
+    if (validMove) {                                      //if not, discover it.
+      this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
     }
@@ -77,9 +77,9 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for Right, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.onStack === true) { validMove = false }      //check if id is already explored
-    if (validMove) {
-      this.displayControl.markOnStack(destinationRow, destinationColumn)
+    if (cell.discovered === true) { validMove = false }      //check if destination node already discovered
+    if (validMove) {                                      //if not, discover it
+      this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
     }
@@ -95,9 +95,9 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for up, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.onStack === true) { validMove = false }   //check if id is already explored
-    if (validMove) {                                   //push node onto the traversal stack.
-      this.displayControl.markOnStack(destinationRow, destinationColumn)
+    if (cell.discovered === true) { validMove = false }   //
+    if (validMove) {                                   //
+      this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
     }
@@ -113,9 +113,9 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for left, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.onStack === true) { validMove = false }      //check if id is already explored
+    if (cell.discovered === true) { validMove = false }      //check if id is already discovered
     if (validMove) {
-      this.displayControl.markOnStack(destinationRow, destinationColumn)
+      this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
     }
