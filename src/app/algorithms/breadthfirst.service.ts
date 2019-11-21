@@ -8,12 +8,14 @@ export class BreadthfirstService {
 
 constructor(private displayControl:DisplaycontrolService) { }
 
+algoFinished: boolean
 sourceStack: string[]           // ids of nodes from where algo found the node
 traversalStack: string[]        // main output of the search algorithm
 stackPointer: number            // points to an index on the traversalStack
 
 init() {
   console.log('at init()')
+  this.algoFinished = false
   this.sourceStack = []
   this.traversalStack = []
   this.stackPointer = 0
@@ -22,16 +24,33 @@ init() {
   this.traversalStack[0] = this.displayControl.getId(this.displayControl.startRow,this.displayControl.startColumn)                            // set first entry in traversalStack to start position
 }
 
-runAlgo() {
-  this.stepAlgo()
+async runAlgo() {
+  //this.algoFinished = false
+  while(!this.algoFinished){
+    this.stepAlgo()
+    await this._delayTimer()
   }
+console.log ('sourceStack:', this.sourceStack)
+}
+
+private _delayTimer () {
+  return new Promise((resolve)=>{
+    setTimeout( ()=> {
+      console.log('delayTimer Resolved')
+      resolve()
+    },0)
+  })
+}
 
 stepAlgo() {
   console.log('at stepAlgo()')
   console.log(this.traversalStack)
+  console.log('stackLength', this.traversalStack.length)
+  console.log('stackPointer:', this.stackPointer)
   this.exploreNeighbors()   //visit all neighbors and place unexplored ones onto traversalStack
-  if (this.stackPointer === this.traversalStack.length) {           //
+  if (this.stackPointer +1 === this.traversalStack.length) {           //
     console.log ('algo complete')
+    this.algoFinished = true
     return
   }
   ++this.stackPointer                         // move stack pointer to next stack location
@@ -51,7 +70,7 @@ exploreNeighbors () {
 }
 
   private _processDown () {
-    if (this.displayControl.cursorRow === 9) { console.log ('down rejected'); return } //check for board boundary
+    if (this.displayControl.cursorRow === 19) { console.log ('down rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow + 1
     const destinationColumn = this.displayControl.cursorColumn
@@ -63,13 +82,13 @@ exploreNeighbors () {
     if (validMove) {                                      //if not, discover it.
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
-      this.sourceStack.push(cursorId)
+      this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
   
   private _processRight () {
-    if (this.displayControl.cursorColumn === 9) { console.log ('right rejected'); return } //check for board boundary
+    if (this.displayControl.cursorColumn === 19) { console.log ('right rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow
     const destinationColumn = this.displayControl.cursorColumn + 1
@@ -82,6 +101,7 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
+      this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
@@ -100,6 +120,7 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
+      this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
@@ -118,13 +139,27 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
+      this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
 
-  findShortestPath () {
+  findShortestPath () {               // change to private
     console.log('at shortestpath')
+    let startId:string = '2_2'
+    let finishId:string = '17_17'
+    let startIndex:string = this._findIndex(startId)
+    let finishIndex:string = this._findIndex(finishId)
+    console.log('startIndex, finishIndex:', startIndex, finishIndex)
 
+  }
+
+  private _findIndex (id) {      // given an id, find what index it is on
+    this.traversalStack.forEach( (item) => {
+      if (item === id) {
+        console.log('found the id at index:', index)
+      }
+    })
   }
 
 

@@ -1,5 +1,6 @@
 export class Cell {
     id:         string
+    sourceCell: string
     visited:    boolean
     discovered: boolean
     explored:   boolean

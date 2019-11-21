@@ -15,11 +15,12 @@ export class DisplaycontrolService {
   board: Cell[][]       //a 2D array of objects representing each space on the maze
 
   getId(row:number, column:number) {                           // returns an id given a row/column 
-    return row.toString() + column.toString()
+    return row.toString() + '_' + column.toString()
+   
   }
 
   getRowColumn(id:string) {                                    // returns a row/column given an id
-    const result:string[] = id.split('')
+    const result:string[] = id.split('_')
     const location:number[] = []
     location[0] = Number(result[0])
     location[1] = Number(result[1])
@@ -31,11 +32,12 @@ export class DisplaycontrolService {
     this.cursorColumn = 0
     let row:number = 0
     let column:number = 0
-    this.board = [ [],[],[],[],[],[],[],[],[],[] ] 
-    for (row=0; row<10; row++){
-      for (column=0; column<10; column++){
+    this.board = [ [],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[] ] 
+    for (row=0; row<20; row++){
+      for (column=0; column<20; column++){
           this.board[row][column] = {
-            id: row.toString()+column.toString(),
+            id: row.toString() + '_' + column.toString(),
+            sourceCell: '',
             visited: false,
             discovered: false,
             explored: false,
@@ -57,8 +59,8 @@ export class DisplaycontrolService {
     redrawBoard (){
     let row:number = 0
     let column:number = 0
-    for (row=0; row<10; row++){
-      for (column=0; column<10; column++){
+    for (row=0; row<20; row++){
+      for (column=0; column<20; column++){
         const id:string = this.getId(row, column)
         let up:boolean = this.board[row][column].wallUp
         let down:boolean = this.board[row][column].wallDown
@@ -103,14 +105,12 @@ export class DisplaycontrolService {
   fillCell (row:number, column:number) {
     const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
-    //document.getElementById(id).classList.add('filled')     //update element
     this.redrawBoard()
   }
 
   clearCell (row:number, column:number) {
     const id:string = this.getId(row, column)
     this.board[row][column].filled = true                   //update state  
-    //document.getElementById(id).classList.remove('filled')  //update element
     this.redrawBoard()
   }
 
@@ -132,8 +132,6 @@ export class DisplaycontrolService {
 
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
-    //const id = this.getId(row,column)
-    //document.getElementById(id).classList.add('visited')
     this.redrawBoard()
   }
 
@@ -158,8 +156,12 @@ export class DisplaycontrolService {
      this.redrawBoard()
   }
 
+  markSource (row:number, column:number) {
+      const source:string = this.getId(this.cursorRow, this.cursorColumn)
+      this.board[this.cursorRow][this.cursorColumn].sourceCell = source          // recive destination and place current cursor loc in there
+  }
+
   moveCursor(destinationRow:number, destinationColumn:number){
-    console.log(this.board)
     this.board[this.cursorRow][this.cursorColumn].hasCursor = false  //Update view
     this.cursorColumn = destinationColumn
     this.cursorRow = destinationRow

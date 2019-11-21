@@ -23,7 +23,7 @@ export class MazerecursivebacktrackerService {
       setTimeout ( ()=> {
         console.log('promise now resolved')
         resolve()
-      },120)
+      },30)
     })
   }
   
@@ -53,20 +53,19 @@ export class MazerecursivebacktrackerService {
     const destinationLocation:number[] = this._getDestinationLocation(chosenDirection)
     this.displayControl.knockoutWalls(chosenDirection)
     this.displayControl.moveCursor(destinationLocation[0], destinationLocation[1])
-    cursorId = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
+    cursorId = this.displayControl.cursorRow.toString() + '_' + this.displayControl.cursorColumn.toString(); 
     this.stack.push(cursorId)                //push destination onto stack
     this.displayControl.markOnStack(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('--------------------')
     }
   
-
   private _chooseMove() {
     let resultDown:boolean = false
     let resultRight:boolean = false
     let resultUp:boolean = false
     let resultLeft:boolean = false
-    if (this.displayControl.cursorRow    != 9) {resultDown = this._checkDown()}    // check that moves are within 
-    if (this.displayControl.cursorColumn != 9) {resultRight = this._checkRight()}  // the outside boundrary and then
+    if (this.displayControl.cursorRow    != 19) {resultDown = this._checkDown()}    // check that moves are within 
+    if (this.displayControl.cursorColumn != 19) {resultRight = this._checkRight()}  // the outside boundrary and then
     if (this.displayControl.cursorRow    != 0) {resultUp = this._checkUp()}        // each direction
     if (this.displayControl.cursorColumn != 0) {resultLeft = this._checkLeft()}
     //console.log('right:',resultRight,'down:',resultDown,'left:',resultLeft,'up:',resultUp)

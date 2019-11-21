@@ -27,7 +27,7 @@ export class ButtonsComponent implements OnInit {
 
   onStartStop() {
     this.displayControl.markStart(2,2)
-    this.displayControl.markFinish(6,6)
+    this.displayControl.markFinish(17,17)
   }
 
   onInitBreadth() {
@@ -35,7 +35,7 @@ export class ButtonsComponent implements OnInit {
   }
   
   onStepBreadth() {
-    this.breadthfirst.stepAlgo()
+    this.breadthfirst.runAlgo()
   }
 
   onStartMazeRecursiveBacktracker () {
