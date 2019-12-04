@@ -11,6 +11,7 @@ constructor(private displayControl:DisplaycontrolService) { }
 algoFinished: boolean
 sourceStack: string[]           // ids of nodes from where algo found the node
 traversalStack: string[]        // main output of the search algorithm
+//whoFoundMe: string[]            // a reference to the node id that found this node
 stackPointer: number            // points to an index on the traversalStack
 
 init() {
@@ -31,6 +32,7 @@ async runAlgo() {
     await this._delayTimer()
   }
 console.log ('sourceStack:', this.sourceStack)
+this.findShortestPath()
 }
 
 private _delayTimer () {
@@ -82,6 +84,7 @@ exploreNeighbors () {
     if (validMove) {                                      //if not, discover it.
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
+      this.sourceStack.push(cursorId)
       this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
@@ -146,20 +149,37 @@ exploreNeighbors () {
 
   findShortestPath () {               // change to private
     console.log('at shortestpath')
+    let keepGoing:boolean = true
     let startId:string = '2_2'
     let finishId:string = '17_17'
-    let startIndex:string = this._findIndex(startId)
-    let finishIndex:string = this._findIndex(finishId)
+    let startIndex:number = this._findIndex(startId)
+    let finishIndex:number = this._findIndex(finishId)
+    let pointer:number = finishIndex
     console.log('startIndex, finishIndex:', startIndex, finishIndex)
+    while (keepGoing) {
+      let foundById:string = this.sourceStack[pointer]  
+      let foundByIndex:number = this._findIndex(foundById)
+      console.log ('foundByIndex:', foundByIndex)
+      //mark path node on display
+      pointer = foundByIndex
+      console.log('pointer:', pointer)
+      //if (foundByIndex === startIndex) { keepGoing = false}
+      keepGoing = false
+    }
 
   }
 
-  private _findIndex (id) {      // given an id, find what index it is on
-    this.traversalStack.forEach( (item) => {
-      if (item === id) {
-        console.log('found the id at index:', index)
+  private _findIndex (id:string) {
+    let i:number
+    for (i = 0; i <= this.traversalStack.length; i++) {
+      console.log ('looking for node id:', id, 'id at traversal[', i, ']. Value here is: ', this.traversalStack[i])
+      if (this.traversalStack[i] === id) {
+        console.log('id found at stack location: ', i)
+        return i
       }
-    })
+    console.log('id not found')
+
+    }
   }
 
 
