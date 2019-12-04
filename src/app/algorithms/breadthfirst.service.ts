@@ -149,39 +149,14 @@ exploreNeighbors () {
     return
   }
 
-  findShortestPath () {               // given a from and to cell, process the shortest path between   
+  findShortestPath (fromCell:string, toCell:string) {   // given a from and to cell, process the shortest path between   
     console.log('at shortestpath')
-    let keepGoing:boolean = true
-    let fromId:string = '2_2'
-    let toId:string = '17_17'
-    let startIndex:number = this._findSourceCell(fromId)
-    let finishIndex:number = this._findSourceCell(toId)
-    let pointer:number = finishIndex       // start algo with a pointer to the index location on traversal stack
-    console.log('startIndex, finishIndex:', startIndex, finishIndex)
-    while (keepGoing) {
-      let idAtPointer:string = this.traversalStack[pointer]
-      //let foundByIndex:number = this._findIndex(foundById)
-      console.log('foundById:', foundById, 'foundByIndex:', foundByIndex)
-      //mark path node on display
-      //pointer = foundByIndex
-      console.log('pointer:', pointer)
-      //if (foundByIndex === startIndex) { keepGoing = false}
-      keepGoing = false
-    }
+    
 
   }
 
-  private _findSourceCell (id:string) {                // given an Id, find the cell that discovered it
-    // let i:number
-    // for (i = 0; i <= this.traversalStack.length; i++) {
-    //   console.log ('looking for node id:', id, 'id at traversal[', i, ']. Value here is: ', this.traversalStack[i])
-    //   if (this.traversalStack[i] === id) {
-    //     console.log('id found at stack location: ', i)
-    //     return i
-    //   }
-    // console.log('id not found')
-
-    // }
+  private _findSourceCell (id:string) {                // given a cell id, find the cell that discovered it
+  
   }
 
 
