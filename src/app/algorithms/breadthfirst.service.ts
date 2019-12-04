@@ -30,8 +30,10 @@ async runAlgo() {
   while(!this.algoFinished){
     this.stepAlgo()
     await this._delayTimer()
+    console.log ('traversalStack:', this.traversalStack)
+    console.log ('sourceStack:', this.sourceStack)
   }
-console.log ('sourceStack:', this.sourceStack)
+// console.log ('sourceStack:', this.sourceStack)
 this.findShortestPath()
 }
 
@@ -147,21 +149,21 @@ exploreNeighbors () {
     return
   }
 
-  findShortestPath () {               // change to private
+  findShortestPath () {               // given a from and to cell, process the shortest path between   
     console.log('at shortestpath')
     let keepGoing:boolean = true
-    let startId:string = '2_2'
-    let finishId:string = '17_17'
-    let startIndex:number = this._findIndex(startId)
-    let finishIndex:number = this._findIndex(finishId)
-    let pointer:number = finishIndex
+    let fromId:string = '2_2'
+    let toId:string = '17_17'
+    let startIndex:number = this._findSourceCell(fromId)
+    let finishIndex:number = this._findSourceCell(toId)
+    let pointer:number = finishIndex       // start algo with a pointer to the index location on traversal stack
     console.log('startIndex, finishIndex:', startIndex, finishIndex)
     while (keepGoing) {
-      let foundById:string = this.sourceStack[pointer]  
-      let foundByIndex:number = this._findIndex(foundById)
-      console.log ('foundByIndex:', foundByIndex)
+      let idAtPointer:string = this.traversalStack[pointer]
+      //let foundByIndex:number = this._findIndex(foundById)
+      console.log('foundById:', foundById, 'foundByIndex:', foundByIndex)
       //mark path node on display
-      pointer = foundByIndex
+      //pointer = foundByIndex
       console.log('pointer:', pointer)
       //if (foundByIndex === startIndex) { keepGoing = false}
       keepGoing = false
@@ -169,17 +171,17 @@ exploreNeighbors () {
 
   }
 
-  private _findIndex (id:string) {
-    let i:number
-    for (i = 0; i <= this.traversalStack.length; i++) {
-      console.log ('looking for node id:', id, 'id at traversal[', i, ']. Value here is: ', this.traversalStack[i])
-      if (this.traversalStack[i] === id) {
-        console.log('id found at stack location: ', i)
-        return i
-      }
-    console.log('id not found')
+  private _findSourceCell (id:string) {                // given an Id, find the cell that discovered it
+    // let i:number
+    // for (i = 0; i <= this.traversalStack.length; i++) {
+    //   console.log ('looking for node id:', id, 'id at traversal[', i, ']. Value here is: ', this.traversalStack[i])
+    //   if (this.traversalStack[i] === id) {
+    //     console.log('id found at stack location: ', i)
+    //     return i
+    //   }
+    // console.log('id not found')
 
-    }
+    // }
   }
 
 

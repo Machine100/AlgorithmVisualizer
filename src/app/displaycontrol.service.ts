@@ -37,7 +37,7 @@ export class DisplaycontrolService {
       for (column=0; column<20; column++){
           this.board[row][column] = {
             id: row.toString() + '_' + column.toString(),
-            //sourceCell: '',
+            sourceCell: '',
             visited: false,
             discovered: false,
             explored: false,
