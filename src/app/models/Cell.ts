@@ -1,6 +1,6 @@
 export class Cell {
     id:         string
-    sourceCell: string
+    shortestPath: boolean 
     visited:    boolean
     discovered: boolean
     explored:   boolean

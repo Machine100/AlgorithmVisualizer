@@ -37,7 +37,7 @@ export class DisplaycontrolService {
       for (column=0; column<20; column++){
           this.board[row][column] = {
             id: row.toString() + '_' + column.toString(),
-            sourceCell: '',
+            shortestPath: false, 
             visited: false,
             discovered: false,
             explored: false,
@@ -62,6 +62,7 @@ export class DisplaycontrolService {
     for (row=0; row<20; row++){
       for (column=0; column<20; column++){
         const id:string = this.getId(row, column)
+        let shortestPath:boolean = this.board[row][column].shortestPath
         let up:boolean = this.board[row][column].wallUp
         let down:boolean = this.board[row][column].wallDown
         let left:boolean = this.board[row][column].wallLeft
@@ -98,6 +99,8 @@ export class DisplaycontrolService {
         if (!discovered) { document.getElementById(id).classList.remove('discovered') }
         if (explored) { document.getElementById(id).classList.add('explored') }
         if (!explored) { document.getElementById(id).classList.remove('explored') }
+        if (shortestPath) { document.getElementById(id).classList.add('shortest-path') }
+        if (!shortestPath) { document.getElementById(id).classList.remove('shortest-path') }
       }
     }
   }
@@ -159,6 +162,11 @@ export class DisplaycontrolService {
   markSource (row:number, column:number) {
       const source:string = this.getId(this.cursorRow, this.cursorColumn)
       this.board[this.cursorRow][this.cursorColumn].sourceCell = source          // recive destination and place current cursor loc in there
+  }
+
+  markShortestPath (row:number, column:number) {
+    this.board[row][column].shortestPath = true                //update display state
+    this.redrawBoard()
   }
 
   moveCursor(destinationRow:number, destinationColumn:number){

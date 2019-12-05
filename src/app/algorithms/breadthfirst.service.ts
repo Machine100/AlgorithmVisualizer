@@ -13,12 +13,14 @@ sourceStack: string[]           // ids of nodes from where algo found the node
 traversalStack: string[]        // main output of the search algorithm
 //whoFoundMe: string[]            // a reference to the node id that found this node
 stackPointer: number            // points to an index on the traversalStack
+shortestPath: string[]
 
 init() {
   console.log('at init()')
   this.algoFinished = false
   this.sourceStack = []
   this.traversalStack = []
+  this.shortestPath = []
   this.stackPointer = 0
   this.displayControl.cursorRow = this.displayControl.startRow
   this.displayControl.cursorColumn = this.displayControl.startColumn
@@ -34,7 +36,8 @@ async runAlgo() {
     console.log ('sourceStack:', this.sourceStack)
   }
 // console.log ('sourceStack:', this.sourceStack)
-this.findShortestPath()
+this.findShortestPath('2_2','15_15')
+this.markShortestPath()
 }
 
 private _delayTimer () {
@@ -57,7 +60,7 @@ stepAlgo() {
     this.algoFinished = true
     return
   }
-  ++this.stackPointer                         // move stack pointer to next stack location
+  ++this.stackPointer                         // move stack i to next stack location
   const nextLocation:string = this.traversalStack[this.stackPointer]
   const destinationCursorRowCol:number[] = this.displayControl.getRowColumn(nextLocation)
   this.displayControl.moveCursor(destinationCursorRowCol[0],destinationCursorRowCol[1])
@@ -87,7 +90,7 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
-      this.displayControl.markSource(destinationRow, destinationColumn)
+     // this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
@@ -106,7 +109,7 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
-      this.displayControl.markSource(destinationRow, destinationColumn)
+      //this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
@@ -125,7 +128,7 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
-      this.displayControl.markSource(destinationRow, destinationColumn)
+      //this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
@@ -144,20 +147,39 @@ exploreNeighbors () {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
-      this.displayControl.markSource(destinationRow, destinationColumn)
+      //this.displayControl.markSource(destinationRow, destinationColumn)
     }
     return
   }
 
-  findShortestPath (fromCell:string, toCell:string) {   // given a from and to cell, process the shortest path between   
+  findShortestPath (fromCell:string, toCell:string) {   // given a from and to id, create a shortest path.
     console.log('at shortestpath')
-    
-
+    let cursor:string = fromCell
+    let keepgoing:boolean = true
+    while (keepgoing) {    //starting at fromCell, find it's discoverer, push that into array, change next to current, 
+      let discoverer:string = this._findDiscoverer(cursor)   // find discoverer of cell under cursor
+      this.shortestPath.push(discoverer)  // push that discoverer into sp array
+      if (discoverer === cursor) { keepgoing = false; break }
+      cursor = discoverer // move cursor:string to next node on shortest path 
+    }
+    console.log('Shortest Path Array:', this.shortestPath)
+ 
   }
 
-  private _findSourceCell (id:string) {                // given a cell id, find the cell that discovered it
-  
+  private _findDiscoverer (id:string) {                // given an id, return the cell that discovered it
+    let discoverer:string
+    for (let i:number = 0; i <= this.traversalStack.length; i++) {
+      if (this.traversalStack[i] === id) { discoverer = this.sourceStack[i]; break }
+       }
+     
+    return discoverer
   }
 
+  markShortestPath () {
+    this.shortestPath.forEach( (element) => {
+      let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
+      this.displayControl.markShortestPath(elementRowColumn[0],elementRowColumn[1])
+    }   )
+  }  
 
 }
