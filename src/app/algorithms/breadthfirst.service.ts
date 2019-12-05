@@ -24,11 +24,16 @@ init() {
   this.stackPointer = 0
   this.displayControl.cursorRow = this.displayControl.startRow
   this.displayControl.cursorColumn = this.displayControl.startColumn
-  this.traversalStack[0] = this.displayControl.getId(this.displayControl.startRow,this.displayControl.startColumn)                            // set first entry in traversalStack to start position
-}
+  //markings for the initial node:
+    this.traversalStack[0] = this.displayControl.getId(this.displayControl.startRow,this.displayControl.startColumn)  //push start onto traversalstack                            // set first entry in traversalStack to start position
+    this.sourceStack[0] = 'end'   //push ___ onto sourcestack for start location
+    this.displayControl.markDiscovered(this.displayControl.startRow,this.displayControl.startColumn)  //mark start as discovered
+    this.displayControl.markExplored(this.displayControl.startRow,this.displayControl.startColumn)    //ditto
+  }
 
 async runAlgo() {
-  //this.algoFinished = false
+
+
   while(!this.algoFinished){
     this.stepAlgo()
     await this._delayTimer()
@@ -36,7 +41,7 @@ async runAlgo() {
     console.log ('sourceStack:', this.sourceStack)
   }
 // console.log ('sourceStack:', this.sourceStack)
-this.findShortestPath('2_2','15_15')
+this.findShortestPath('5_5','10_10')
 this.markShortestPath()
 }
 

@@ -1,4 +1,4 @@
-.grid-wrapper {
+.grid-wrapper{
     display: grid;
     grid-template-columns: repeat(20, 15px);
     grid-template-rows: repeat(20, 15px);
@@ -6,18 +6,12 @@
     border-color: lightcyan;
     max-width: 350px;
 }
-.grid-item{
-    border-color: grey;
-    
-}
-
 .button-panel-wrapper{
     display: grid;
     border-style: solid;
     border-color: yellow;
    max-width: 350px;
 }
-
 @keyframes fillIn {
     from {
     }
@@ -25,33 +19,9 @@
         background-color: blue;
     }
 }
-.on-stack{
-    background-color: cyan;
+.grid-item{
+    border-color: grey;
 }
-
- .visited{ 
-     background-color: blue; 
- }
-  .discovered{ 
-     background-color: purple; 
- }
-  .explored{ 
-     background-color: teal; 
- }
-.start-cell {
-    background-color: lightgreen;
-}
-.finish-cell {
-    background-color: lightpink;
-}
-.has-cursor { 
-    background-color: orange;
-}
-.shortest-path{
-    background-color: orange;
-}
-
-.none{ border-style: none; }
 
 .r{ 
     border-color: grey;
@@ -67,3 +37,31 @@
 .d{ border-color: grey;
     border-bottom-style:solid;
 }
+
+.on-stack{
+    background-color: cyan;
+}
+.visited{ 
+     background-color: blue; 
+ }
+.discovered{ 
+     background-color: purple; 
+ }
+.explored{ 
+     background-color: teal;
+ }
+.shortest-path{
+    background-color: yellow;
+}
+.start-cell {
+    background-color: lightgreen;
+}
+.finish-cell {
+    background-color: lightpink;
+}
+.has-cursor { 
+    background-color: orange;
+}
+
+
+.none{ border-style: none; }
