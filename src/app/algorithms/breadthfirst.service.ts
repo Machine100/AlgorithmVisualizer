@@ -6,80 +6,75 @@ import { DisplaycontrolService } from 'src/app/displaycontrol.service';
 })
 export class BreadthfirstService {
 
-constructor(private displayControl:DisplaycontrolService) { }
+  constructor(private displayControl:DisplaycontrolService) { }
 
-algoFinished: boolean
-sourceStack: string[]           // ids of nodes from where algo found the node
-traversalStack: string[]        // main output of the search algorithm
-//whoFoundMe: string[]            // a reference to the node id that found this node
-stackPointer: number            // points to an index on the traversalStack
-shortestPath: string[]
+  algoFinished: boolean
+  sourceStack: string[]           // ids of nodes from where algo found the node
+  traversalStack: string[]        // main output of the search algorithm
+  stackPointer: number            // points to an index on the traversalStack
+  shortestPath: string[]          // contains the shortest path from the start node to a given destination node
 
-init() {
-  console.log('at init()')
-  this.algoFinished = false
-  this.sourceStack = []
-  this.traversalStack = []
-  this.shortestPath = []
-  this.stackPointer = 0
-  this.displayControl.cursorRow = this.displayControl.startRow
-  this.displayControl.cursorColumn = this.displayControl.startColumn
-  //markings for the initial node:
-    this.traversalStack[0] = this.displayControl.getId(this.displayControl.startRow,this.displayControl.startColumn)  //push start onto traversalstack                            // set first entry in traversalStack to start position
-    this.sourceStack[0] = 'end'   //push ___ onto sourcestack for start location
-    this.displayControl.markDiscovered(this.displayControl.startRow,this.displayControl.startColumn)  //mark start as discovered
-    this.displayControl.markExplored(this.displayControl.startRow,this.displayControl.startColumn)    //ditto
+  init() {
+    console.log('at init()')
+    this.algoFinished = false
+    this.sourceStack = []
+    this.traversalStack = []
+    this.shortestPath = []
+    this.stackPointer = 0
+    this.displayControl.cursorRow = this.displayControl.startRow
+    this.displayControl.cursorColumn = this.displayControl.startColumn
+    //markings for the initial node:
+      this.traversalStack[0] = this.displayControl.getId(this.displayControl.startRow,this.displayControl.startColumn)  //push start onto traversalstack                            // set first entry in traversalStack to start position
+      this.sourceStack[0] = 'end'                                                                       //push ___ onto sourcestack for start location
+      this.displayControl.markDiscovered(this.displayControl.startRow,this.displayControl.startColumn)  //mark start as discovered
+      this.displayControl.markExplored(this.displayControl.startRow,this.displayControl.startColumn)    //ditto
   }
 
-async runAlgo() {
-
-
-  while(!this.algoFinished){
-    this.stepAlgo()
-    await this._delayTimer()
-    console.log ('traversalStack:', this.traversalStack)
-    console.log ('sourceStack:', this.sourceStack)
-  }
-// console.log ('sourceStack:', this.sourceStack)
-this.findShortestPath('5_5','10_10')
-this.markShortestPath()
-}
-
-private _delayTimer () {
-  return new Promise((resolve)=>{
-    setTimeout( ()=> {
-      console.log('delayTimer Resolved')
-      resolve()
-    },0)
-  })
-}
-
-stepAlgo() {
-  console.log('at stepAlgo()')
-  console.log(this.traversalStack)
-  console.log('stackLength', this.traversalStack.length)
-  console.log('stackPointer:', this.stackPointer)
-  this.exploreNeighbors()   //visit all neighbors and place unexplored ones onto traversalStack
-  if (this.stackPointer +1 === this.traversalStack.length) {           //
-    console.log ('algo complete')
-    this.algoFinished = true
-    return
-  }
-  ++this.stackPointer                         // move stack i to next stack location
-  const nextLocation:string = this.traversalStack[this.stackPointer]
-  const destinationCursorRowCol:number[] = this.displayControl.getRowColumn(nextLocation)
-  this.displayControl.moveCursor(destinationCursorRowCol[0],destinationCursorRowCol[1])
+  private _delayTimer () {
+    return new Promise((resolve)=>{
+      setTimeout( ()=> {
+        console.log('delayTimer Resolved')
+        resolve()
+      },0)
+    })
   }
 
-exploreNeighbors () {
+  async runAlgo() {
+    while(!this.algoFinished){
+      this.stepAlgo()
+      await this._delayTimer()
+      console.log ('traversalStack:', this.traversalStack)
+      console.log ('sourceStack:', this.sourceStack)
+    }
+    this.findShortestPath('10_10')          // this static value for testing. Eventually make it moveable.
+    this.markShortestPath()
+  }
 
+  stepAlgo() {
+    console.log('at stepAlgo()')
+    console.log(this.traversalStack)
+    console.log('stackLength', this.traversalStack.length)
+    console.log('stackPointer:', this.stackPointer)
+    this.exploreNeighbors()                 //visit all neighbors and place unexplored ones onto traversalStack
+    if (this.stackPointer +1 === this.traversalStack.length) {
+      console.log ('algo complete')
+      this.algoFinished = true
+      return
+    }
+    ++this.stackPointer                         // move stack i to next stack location
+    const nextLocation:string = this.traversalStack[this.stackPointer]
+    const destinationCursorRowCol:number[] = this.displayControl.getRowColumn(nextLocation)
+    this.displayControl.moveCursor(destinationCursorRowCol[0],destinationCursorRowCol[1])
+  }
+
+  exploreNeighbors () {
     console.log ('cursor at:', this.displayControl.cursorRow,this.displayControl.cursorColumn)
-    this._processDown()           // validate each direction
+    this._processDown()                         // validate each direction
     this._processRight()
     this._processUp()      
     this._processLeft()
     this.displayControl.markExplored(this.displayControl.cursorRow,this.displayControl.cursorColumn)
-}
+  }
 
   private _processDown () {
     if (this.displayControl.cursorRow === 19) { console.log ('down rejected'); return } //check for board boundary
@@ -90,7 +85,7 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for down, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.discovered === true) { validMove = false }      //check if destination node is already discovered
+    if (cell.discovered === true) { validMove = false }   //check if destination node is already discovered
     if (validMove) {                                      //if not, discover it.
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
@@ -109,7 +104,7 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for Right, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.discovered === true) { validMove = false }      //check if destination node already discovered
+    if (cell.discovered === true) { validMove = false }   //check if destination node already discovered
     if (validMove) {                                      //if not, discover it
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
@@ -119,7 +114,7 @@ exploreNeighbors () {
     return
   }
 
-  private _processUp () {                // these look for new discoveries
+  private _processUp () {                                                            // these look for new discoveries
     if (this.displayControl.cursorRow === 0) { console.log ('up rejected'); return } //check for board boundary
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow - 1
@@ -128,8 +123,8 @@ exploreNeighbors () {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     console.log('for up, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
-    if (cell.discovered === true) { validMove = false }   //
-    if (validMove) {                                   //
+    if (cell.discovered === true) { validMove = false }
+    if (validMove) {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
       this.traversalStack.push(destinationId)
       this.sourceStack.push(cursorId)
@@ -157,26 +152,25 @@ exploreNeighbors () {
     return
   }
 
-  findShortestPath (fromCell:string, toCell:string) {   // given a from and to id, create a shortest path.
+  findShortestPath (destinationCell:string) {        // given a destination node, trace it back to the source
     console.log('at shortestpath')
-    let cursor:string = fromCell
+    let cursor:string = destinationCell
     let keepgoing:boolean = true
-    while (keepgoing) {    //starting at fromCell, find it's discoverer, push that into array, change next to current, 
+    while (keepgoing) {                                      //starting at fromCell, find it's discoverer, push that into array, change next to current, 
       let discoverer:string = this._findDiscoverer(cursor)   // find discoverer of cell under cursor
-      this.shortestPath.push(discoverer)  // push that discoverer into sp array
-      if (discoverer === cursor) { keepgoing = false; break }
-      cursor = discoverer // move cursor:string to next node on shortest path 
+      this.shortestPath.push(discoverer)                     // push that discoverer into sp array
+      if (discoverer === 'end') { keepgoing = false; break }
+      cursor = discoverer                                    // move cursor:string to next node on shortest path 
     }
     console.log('Shortest Path Array:', this.shortestPath)
  
   }
 
-  private _findDiscoverer (id:string) {                // given an id, return the cell that discovered it
+  private _findDiscoverer (id:string) {                       // given an id, return the cell that discovered it
     let discoverer:string
     for (let i:number = 0; i <= this.traversalStack.length; i++) {
       if (this.traversalStack[i] === id) { discoverer = this.sourceStack[i]; break }
        }
-     
     return discoverer
   }
 
