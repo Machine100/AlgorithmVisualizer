@@ -37,7 +37,9 @@
 .d{ border-color: grey;
     border-bottom-style:solid;
 }
-
+.blocked {
+    background-color: darkgray;
+}
 .on-stack{
     background-color: cyan;
 }
@@ -62,6 +64,5 @@
 .has-cursor { 
     background-color: orange;
 }
-
 
 .none{ border-style: none; }

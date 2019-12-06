@@ -41,7 +41,7 @@ export class DisplaycontrolService {
             visited: false,
             discovered: false,
             explored: false,
-            filled: false,
+            blocked: false,
             onStack: false,
             hasCursor: false,
             startCell: false,
@@ -67,7 +67,7 @@ export class DisplaycontrolService {
         let down:boolean = this.board[row][column].wallDown
         let left:boolean = this.board[row][column].wallLeft
         let right:boolean = this.board[row][column].wallRight
-        let filled:boolean = this.board[row][column].filled
+        let blocked:boolean = this.board[row][column].blocked
         let hasCursor:boolean = this.board[row][column].hasCursor
         let onStack:boolean = this.board[row][column].onStack
         let startCell:boolean = this.board[row][column].startCell 
@@ -83,8 +83,8 @@ export class DisplaycontrolService {
         if (!left) { document.getElementById(id).classList.remove('l') }
         if (right) { document.getElementById(id).classList.add('r') }
         if (!right) { document.getElementById(id).classList.remove('r') }
-        if (filled) { document.getElementById(id).classList.add('filled') }
-        if (!filled) { document.getElementById(id).classList.remove('filled') }
+        if (blocked) { document.getElementById(id).classList.add('blocked') }
+        if (!blocked) { document.getElementById(id).classList.remove('blocked') }
         if (hasCursor) { document.getElementById(id).classList.add('has-cursor') }
         if (!hasCursor) { document.getElementById(id).classList.remove('has-cursor') }
         if (onStack) { document.getElementById(id).classList.add('on-stack') }
@@ -105,17 +105,17 @@ export class DisplaycontrolService {
     }
   }
 
-  fillCell (row:number, column:number) {
-    const id:string = this.getId(row, column)
-    this.board[row][column].filled = true                   //update state  
-    this.redrawBoard()
-  }
+  // fillCell (row:number, column:number) {
+  //   const id:string = this.getId(row, column)
+  //   this.board[row][column].filled = true                   //update state  
+  //   this.redrawBoard()
+  // }
 
-  clearCell (row:number, column:number) {
-    const id:string = this.getId(row, column)
-    this.board[row][column].filled = true                   //update state  
-    this.redrawBoard()
-  }
+  // clearCell (row:number, column:number) {
+  //   const id:string = this.getId(row, column)
+  //   this.board[row][column].filled = true                   //update state  
+  //   this.redrawBoard()
+  // }
 
   markStart (row:number, column:number) {
     const id:string = this.getId(row, column)
@@ -135,45 +135,66 @@ export class DisplaycontrolService {
 
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
-    this.redrawBoard()
+    let id:string = this.getId(row,column)
+    document.getElementById(id).classList.add('visited')
+    //this.redrawBoard()
   }
 
   markDiscovered (row:number, column:number) {
     console.log('at markDiscovered', row, column)
      this.board[row][column].discovered = true               //update display state
-     this.redrawBoard()
+     let id:string = this.getId(row,column)
+     document.getElementById(id).classList.add('discovered')
   }
 
   markExplored (row:number, column:number) {
      this.board[row][column].explored = true               //update display state
-     this.redrawBoard()
+     //this.redrawBoard()
+     let id:string = this.getId(row,column)
+     document.getElementById(id).classList.add('explored')
   }
 
   markOffStack (row:number, column:number) {
      this.board[row][column].onStack = false               //update display state
-     this.redrawBoard()
+     //this.redrawBoard()
+     let id:string = this.getId(row,column)
+     document.getElementById(id).classList.remove('on-stack')
   }
 
   markOnStack (row:number, column:number) {
      this.board[row][column].onStack = true                //update display state
-     this.redrawBoard()
+     //this.redrawBoard()
+     let id:string = this.getId(row,column)
+     document.getElementById(id).classList.add('on-stack')
   }
 
-  markSource (row:number, column:number) {
-      const source:string = this.getId(this.cursorRow, this.cursorColumn)
-      this.board[this.cursorRow][this.cursorColumn].sourceCell = source          // recive destination and place current cursor loc in there
+  markBlocked (row:number, column:number) {
+     this.board[row][column].blocked= true                //update display state
+     //this.redrawBoard()
+     let id:string = this.getId(row,column)
+     document.getElementById(id).classList.add('blocked')
   }
+
+  // markSource (row:number, column:number) {
+  //     const source:string = this.getId(this.cursorRow, this.cursorColumn)
+  //     this.board[this.cursorRow][this.cursorColumn].sourceCell = source          // recive destination and place current cursor loc in there
+  // }
 
   markShortestPath (row:number, column:number) {
     this.board[row][column].shortestPath = true                //update display state
-    this.redrawBoard()
+    let id:string = this.getId(row,column)
+    document.getElementById(id).classList.add('shortest-path')
   }
 
   moveCursor(destinationRow:number, destinationColumn:number){
-    this.board[this.cursorRow][this.cursorColumn].hasCursor = false  //Update view
-    this.cursorColumn = destinationColumn
-    this.cursorRow = destinationRow
-    this.board[destinationRow][destinationColumn].hasCursor = true   //update view
+    this.board[this.cursorRow][this.cursorColumn].hasCursor = false    //update view state and 
+    let cursorId:string = this.getId(this.cursorRow,this.cursorColumn) //update view CSS
+    document.getElementById(cursorId).classList.remove('has-cursor')   //to remove previous cursor location
+    this.cursorColumn = destinationColumn   //change the cursor location
+    this.cursorRow = destinationRow         // 
+    this.board[destinationRow][destinationColumn].hasCursor = true     //update view state and
+    cursorId = this.getId(this.cursorRow,this.cursorColumn)            //update view CSS
+    document.getElementById(cursorId).classList.add('has-cursor')             //to reflect new cursor location
     console.log('currentcursorRow',this.cursorRow,'currentcursorColumn:',this.cursorColumn)
   }
 

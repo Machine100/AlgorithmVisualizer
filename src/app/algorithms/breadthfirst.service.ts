@@ -35,7 +35,7 @@ export class BreadthfirstService {
       setTimeout( ()=> {
         console.log('delayTimer Resolved')
         resolve()
-      },0)
+      },25)
     })
   }
 
@@ -46,7 +46,7 @@ export class BreadthfirstService {
       console.log ('traversalStack:', this.traversalStack)
       console.log ('sourceStack:', this.sourceStack)
     }
-    this.findShortestPath('10_10')          // this static value for testing. Eventually make it moveable.
+    this.findShortestPath('2_2')            // this static value for testing. Eventually make it moveable.
     this.markShortestPath()
   }
 

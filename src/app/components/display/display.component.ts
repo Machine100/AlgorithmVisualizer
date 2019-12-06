@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DisplaycontrolService } from 'src/app/displaycontrol.service';
 
 @Component({
   selector: 'app-display',
@@ -7,11 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DisplayComponent implements OnInit {
 
-  constructor() { }
+  constructor(private displayControl:DisplaycontrolService) { }
 
   ngOnInit() {
   }
 
-  onClick(row:string, column:string) {
+  onClick(id:string) {
+    console.log('click at ', id)
+    let idRowCol:number[] = this.displayControl.getRowColumn(id)
+    this.displayControl.markBlocked(idRowCol[0],idRowCol[1])
   }
 }

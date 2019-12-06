@@ -4,7 +4,7 @@ export class Cell {
     visited:    boolean
     discovered: boolean
     explored:   boolean
-    filled:     boolean
+    blocked:    boolean
     onStack:    boolean
     hasCursor:  boolean
     startCell:  boolean
