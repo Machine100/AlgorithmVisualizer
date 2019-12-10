@@ -46,7 +46,7 @@ export class BreadthfirstService {
       console.log ('traversalStack:', this.traversalStack)
       console.log ('sourceStack:', this.sourceStack)
     }
-    this.findShortestPath('2_2')            // this static value for testing. Eventually make it moveable.
+    this.findShortestPath('2_6')            // this static value for testing. Eventually make it moveable.
     this.markShortestPath()
   }
 
