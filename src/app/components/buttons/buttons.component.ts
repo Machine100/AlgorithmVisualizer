@@ -47,6 +47,6 @@ export class ButtonsComponent implements OnInit {
   }
 
   onFindShortestPath(){
-    this.breadthfirst.findShortestPath()
+    this.breadthfirst.findShortestPath('1_18')
   }
 }
