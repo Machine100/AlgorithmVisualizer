@@ -84,6 +84,14 @@ export class BreadthfirstService {
     const destinationId:string = this.displayControl.getId(destinationRow,destinationColumn)
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
+    
+    
+    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallDown ){
+      console.log('rejected for wall')
+      return
+    }
+    
+    
     console.log('for down, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }   //check if destination node is already discovered
@@ -104,6 +112,12 @@ export class BreadthfirstService {
     const destinationId:string = this.displayControl.getId(destinationRow,destinationColumn)
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
+        
+    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallRight ){
+      console.log('rejected for wall')
+      return
+    }
+    
     console.log('for Right, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }   //check if destination node already discovered
@@ -124,6 +138,12 @@ export class BreadthfirstService {
     const destinationId:string = this.displayControl.getId(destinationRow,destinationColumn)
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
+    
+    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallUp ){
+      console.log('rejected for wall')
+      return
+    }
+
     console.log('for up, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }
@@ -144,6 +164,13 @@ export class BreadthfirstService {
     const destinationId:string = this.displayControl.getId(destinationRow,destinationColumn)
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
+    
+        
+    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallLeft ){
+      console.log('rejected for wall')
+      return
+    }
+    
     console.log('for left, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }      //check if id is already discovered
