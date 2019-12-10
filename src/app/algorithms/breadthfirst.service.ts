@@ -189,12 +189,13 @@ export class BreadthfirstService {
     let keepgoing:boolean = true
     while (keepgoing) {                                      //starting at fromCell, find it's discoverer, push that into array, change next to current, 
       let discoverer:string = this._findDiscoverer(cursor)   // find discoverer of cell under cursor
+      console.log('cursor:', cursor,' discoverer: ', discoverer )
       this.shortestPath.push(discoverer)                     // push that discoverer into sp array
-      if (discoverer === 'end') { keepgoing = false; break }
+      if (discoverer === 'end') { console.log('ending'); keepgoing = false; break }
       cursor = discoverer                                    // move cursor:string to next node on shortest path 
+      console.log ('loop')
     }
     console.log('Shortest Path Array:', this.shortestPath)
- 
   }
 
   private _findDiscoverer (id:string) {                       // given an id, return the cell that discovered it
@@ -206,6 +207,7 @@ export class BreadthfirstService {
   }
 
   markShortestPath () {
+    console.log('at markShortestPath()')
     this.shortestPath.forEach( (element) => {
       let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
       this.displayControl.markShortestPath(elementRowColumn[0],elementRowColumn[1])

@@ -23,7 +23,7 @@ export class MazerecursivebacktrackerService {
       setTimeout ( ()=> {
         console.log('promise now resolved')
         resolve()
-      },30)
+      },0)               //set to 30 for production
     })
   }
   
