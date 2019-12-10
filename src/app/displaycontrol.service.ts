@@ -137,7 +137,7 @@ export class DisplaycontrolService {
     this.board[this.cursorRow][this.cursorColumn].visited = true
     let id:string = this.getId(row,column)
     document.getElementById(id).classList.add('visited')
-    //this.redrawBoard()
+    this.redrawBoard()
   }
 
   markDiscovered (row:number, column:number) {

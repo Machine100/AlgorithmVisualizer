@@ -79,7 +79,7 @@ export class MazerecursivebacktrackerService {
     return 'none'     // cursor is at a dead end
   }
 
-  private _checkDown(){                    // Flash on checks
+  private _checkDown(){
     let onStack:boolean = false
     let cell = this.displayControl.board[this.displayControl.cursorRow + 1][this.displayControl.cursorColumn]
     this.stack.forEach(stackItem=>{        //check if id is on stack
