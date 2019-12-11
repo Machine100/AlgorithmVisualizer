@@ -35,24 +35,24 @@ export class BreadthfirstService {
       setTimeout( ()=> {
         console.log('delayTimer Resolved')
         resolve()
-      },25)
+      },0)                                  //set to 25 for production
     })
   }
 
   async runAlgo() {
     while(!this.algoFinished){
-      this.stepAlgo()
+      await this.stepAlgo()
       await this._delayTimer()
-      console.log ('traversalStack:', this.traversalStack)
-      console.log ('sourceStack:', this.sourceStack)
+      //console.log ('traversalStack:', this.traversalStack)
+      //console.log ('sourceStack:', this.sourceStack)
     }
-    this.findShortestPath('2_6')            // this static value for testing. Eventually make it moveable.
-    this.markShortestPath()
+    await this.findShortestPath('2_6')            // this static value for testing. Eventually make it moveable.
+    await this.markShortestPath()
   }
 
   stepAlgo() {
     console.log('at stepAlgo()')
-    console.log(this.traversalStack)
+    //console.log(this.traversalStack)
     console.log('stackLength', this.traversalStack.length)
     console.log('stackPointer:', this.stackPointer)
     this.exploreNeighbors()                 //visit all neighbors and place unexplored ones onto traversalStack
@@ -145,7 +145,7 @@ export class BreadthfirstService {
     }
 
     console.log('for up, checing destination:',destinationRow,destinationColumn)
-    let cell = this.displayControl.board[destinationRow][destinationColumn]
+    const cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }
     if (validMove) {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
@@ -172,7 +172,7 @@ export class BreadthfirstService {
     }
     
     console.log('for left, checing destination:',destinationRow,destinationColumn)
-    let cell = this.displayControl.board[destinationRow][destinationColumn]
+    const cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }      //check if id is already discovered
     if (validMove) {
       this.displayControl.markDiscovered(destinationRow, destinationColumn)
@@ -193,7 +193,6 @@ export class BreadthfirstService {
       this.shortestPath.push(discoverer)                     // push that discoverer into sp array
       if (discoverer === 'end') { console.log('ending'); keepgoing = false; break }
       cursor = discoverer                                    // move cursor:string to next node on shortest path 
-      console.log ('loop')
     }
     console.log('Shortest Path Array:', this.shortestPath)
   }
@@ -209,9 +208,12 @@ export class BreadthfirstService {
   markShortestPath () {
     console.log('at markShortestPath()')
     this.shortestPath.forEach( (element) => {
-      let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
-      this.displayControl.markShortestPath(elementRowColumn[0],elementRowColumn[1])
-    }   )
+      if (!(element === 'end')) {                        // do not attempt to process the ending node
+        let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
+        this.displayControl.markShortestPath(elementRowColumn[0],elementRowColumn[1])
+        console.log('loop in markShortestPath')
+      }
+    })
   }  
 
 }

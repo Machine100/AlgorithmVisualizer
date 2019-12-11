@@ -21,7 +21,6 @@ export class MazerecursivebacktrackerService {
   private _delayTimer() {
     return new Promise((resolve) => {
       setTimeout ( ()=> {
-        console.log('promise now resolved')
         resolve()
       },0)               //set to 30 for production
     })
@@ -32,14 +31,14 @@ export class MazerecursivebacktrackerService {
    
     this.algoFinished = false
     while (!this.algoFinished) {                            // step algo until maze generation is complete
-      this._stepAlgo()
+      await this._stepAlgo()
       await this._delayTimer()
       //this.displayControl.redrawBoard()
-      console.log('---single algo cycle complete---')
+      console.log('---single algo step complete---')
     }
   }
 
-    private async _stepAlgo(){                         
+  private async _stepAlgo(){                         
     let cursorId:string = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     let chosenDirection:string = 'none'
     while (chosenDirection === 'none') {
@@ -56,8 +55,7 @@ export class MazerecursivebacktrackerService {
     cursorId = this.displayControl.cursorRow.toString() + '_' + this.displayControl.cursorColumn.toString(); 
     this.stack.push(cursorId)                //push destination onto stack
     this.displayControl.markOnStack(this.displayControl.cursorRow, this.displayControl.cursorColumn)
-    console.log('--------------------')
-    }
+  }
   
   private _chooseMove() {
     let resultDown:boolean = false
@@ -85,7 +83,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(onStack) ) {return false}
+    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
     else return true
   }
   
@@ -95,7 +93,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(onStack) ) {return false}
+    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
     else return true
   }
   
@@ -106,7 +104,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(onStack) ) {return false}
+    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
     else return true
   }
 
@@ -116,7 +114,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(item=>{        //check if id is on stack
       if (item === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(onStack) ) {return false}
+    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
     else return true
   }
 
@@ -141,9 +139,9 @@ export class MazerecursivebacktrackerService {
     return destination
   }
 
-  private _backTrack(){
-    console.log ('at _backTrack')
-    this._delayTimer()
+  private async _backTrack(){
+    //console.log ('at _backTrack')
+    await this._delayTimer()
     this.displayControl.markVisited(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     const poppedLocation:number[] = this._popStack()
     if (this.stack.length === 0) {console.log('mazecomplete'); this.algoFinished = true; return}       //maze is complete

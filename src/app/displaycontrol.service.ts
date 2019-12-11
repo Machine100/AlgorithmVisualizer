@@ -136,7 +136,7 @@ export class DisplaycontrolService {
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
     let id:string = this.getId(row,column)
-    document.getElementById(id).classList.add('visited')
+    //document.getElementById(id).classList.add('visited')
     this.redrawBoard()
   }
 
@@ -195,7 +195,7 @@ export class DisplaycontrolService {
     this.board[destinationRow][destinationColumn].hasCursor = true     //update view state and
     cursorId = this.getId(this.cursorRow,this.cursorColumn)            //update view CSS
     document.getElementById(cursorId).classList.add('has-cursor')             //to reflect new cursor location
-    console.log('currentcursorRow',this.cursorRow,'currentcursorColumn:',this.cursorColumn)
+    //console.log('currentcursorRow',this.cursorRow,'currentcursorColumn:',this.cursorColumn)
   }
 
   knockoutWalls(direction:string){

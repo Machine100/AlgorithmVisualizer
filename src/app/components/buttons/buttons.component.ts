@@ -21,32 +21,35 @@ export class ButtonsComponent implements OnInit {
 
   onInit() {
     console.log('At buttons onInit()')
+    this.displayControl.markStart(2,2)
+    this.displayControl.markFinish(17,17)
     this.displayControl.redrawBoard()
   //  this.displayControl.fillCell(1, 1)
   }
 
   onStartStop() {
-    this.displayControl.markStart(2,2)
-    this.displayControl.markFinish(17,17)
+
   }
 
   onInitBreadth() {
-    this.breadthfirst.init()
+    
   }
   
   onStepBreadth() {
+    this.breadthfirst.init()
     this.breadthfirst.runAlgo()
   }
 
   onStartMazeRecursiveBacktracker () {
+    this.mazeRecursiveBacktracker.onInitStack()
     this.mazeRecursiveBacktracker.onFireoffAlgo()
   }
 
   onInitStack(){
-    this.mazeRecursiveBacktracker.onInitStack()
+    
   }
 
   onFindShortestPath(){
-    this.breadthfirst.findShortestPath('1_18')
+    this.breadthfirst.findShortestPath()
   }
 }
