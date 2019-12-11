@@ -35,7 +35,7 @@ export class BreadthfirstService {
       setTimeout( ()=> {
         console.log('delayTimer Resolved')
         resolve()
-      },0)                                  //set to 25 for production
+      },0)                                      //set to 25 for production
     })
   }
 
@@ -46,7 +46,7 @@ export class BreadthfirstService {
       //console.log ('traversalStack:', this.traversalStack)
       //console.log ('sourceStack:', this.sourceStack)
     }
-    await this.findShortestPath('2_6')            // this static value for testing. Eventually make it moveable.
+    await this.findShortestPath('2_6')          // this static value for testing. Eventually make it moveable.
     await this.markShortestPath()
   }
 
@@ -55,7 +55,7 @@ export class BreadthfirstService {
     //console.log(this.traversalStack)
     console.log('stackLength', this.traversalStack.length)
     console.log('stackPointer:', this.stackPointer)
-    this.exploreNeighbors()                 //visit all neighbors and place unexplored ones onto traversalStack
+    this.exploreNeighbors()                     //visit all neighbors and place unexplored ones onto traversalStack
     if (this.stackPointer +1 === this.traversalStack.length) {
       console.log ('algo complete')
       this.algoFinished = true
@@ -140,11 +140,11 @@ export class BreadthfirstService {
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
     
     if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallUp ){
-      console.log('rejected for wall')
+      console.log('rejected for wall')                   //these sections added to enable solving of maze.
       return
     }
 
-    console.log('for up, checing destination:',destinationRow,destinationColumn)
+    console.log('for up, checing destination:', destinationRow, destinationColumn)
     const cell = this.displayControl.board[destinationRow][destinationColumn]
     if (cell.discovered === true) { validMove = false }
     if (validMove) {
@@ -161,7 +161,7 @@ export class BreadthfirstService {
     let validMove:boolean = true
     const destinationRow = this.displayControl.cursorRow
     const destinationColumn = this.displayControl.cursorColumn - 1
-    const destinationId:string = this.displayControl.getId(destinationRow,destinationColumn)
+    const destinationId:string = this.displayControl.getId(destinationRow, destinationColumn)
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
     
@@ -183,7 +183,7 @@ export class BreadthfirstService {
     return
   }
 
-  findShortestPath (destinationCell:string) {        // given a destination node, trace it back to the source
+  findShortestPath (destinationCell:string) {                // given a destination node, trace it back to the source
     console.log('at shortestpath')
     let cursor:string = destinationCell
     let keepgoing:boolean = true
@@ -208,9 +208,9 @@ export class BreadthfirstService {
   markShortestPath () {
     console.log('at markShortestPath()')
     this.shortestPath.forEach( (element) => {
-      if (!(element === 'end')) {                        // do not attempt to process the ending node
+      if (!(element === 'end')) {                             // do not attempt to process the ending node
         let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
-        this.displayControl.markShortestPath(elementRowColumn[0],elementRowColumn[1])
+        this.displayControl.markShortestPath(elementRowColumn[0], elementRowColumn[1])
         console.log('loop in markShortestPath')
       }
     })

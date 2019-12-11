@@ -16,24 +16,20 @@ export class ButtonsComponent implements OnInit {
     private mazeRecursiveBacktracker: MazerecursivebacktrackerService) {}
 
   ngOnInit() {
-    this.displayControl.initBoard()
+    this.onInit()
   }
 
   onInit() {
-    console.log('At buttons onInit()')
+    this.displayControl.initBoard()
     this.displayControl.markStart(2,2)
     this.displayControl.markFinish(17,17)
     this.displayControl.redrawBoard()
-  //  this.displayControl.fillCell(1, 1)
   }
 
-  onStartStop() {
-
-  }
-
-  onInitBreadth() {
-    
-  }
+  onStartStop() { }
+  onInitBreadth() { } 
+  onInitStack(){ }
+  onFindShortestPath(){ }
   
   onStepBreadth() {
     this.breadthfirst.init()
@@ -43,13 +39,5 @@ export class ButtonsComponent implements OnInit {
   onStartMazeRecursiveBacktracker () {
     this.mazeRecursiveBacktracker.onInitStack()
     this.mazeRecursiveBacktracker.onFireoffAlgo()
-  }
-
-  onInitStack(){
-    
-  }
-
-  onFindShortestPath(){
-    this.breadthfirst.findShortestPath()
   }
 }

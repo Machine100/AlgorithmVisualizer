@@ -53,7 +53,7 @@ export class DisplaycontrolService {
           }
       }
     }
-    console.log('board:',this.board)
+    console.log('board:', this.board)
   }
 
     redrawBoard (){
@@ -135,7 +135,7 @@ export class DisplaycontrolService {
 
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
-    let id:string = this.getId(row,column)
+    let id:string = this.getId(row, column)
     //document.getElementById(id).classList.add('visited')
     this.redrawBoard()
   }
@@ -143,63 +143,58 @@ export class DisplaycontrolService {
   markDiscovered (row:number, column:number) {
     console.log('at markDiscovered', row, column)
      this.board[row][column].discovered = true               //update display state
-     let id:string = this.getId(row,column)
+     let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('discovered')
   }
 
   markExplored (row:number, column:number) {
      this.board[row][column].explored = true               //update display state
      //this.redrawBoard()
-     let id:string = this.getId(row,column)
+     let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('explored')
   }
 
   markOffStack (row:number, column:number) {
      this.board[row][column].onStack = false               //update display state
      //this.redrawBoard()
-     let id:string = this.getId(row,column)
+     let id:string = this.getId(row, column)
      document.getElementById(id).classList.remove('on-stack')
   }
 
   markOnStack (row:number, column:number) {
      this.board[row][column].onStack = true                //update display state
      //this.redrawBoard()
-     let id:string = this.getId(row,column)
+     let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('on-stack')
   }
 
   markBlocked (row:number, column:number) {
      this.board[row][column].blocked= true                //update display state
      //this.redrawBoard()
-     let id:string = this.getId(row,column)
+     let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('blocked')
   }
 
-  // markSource (row:number, column:number) {
-  //     const source:string = this.getId(this.cursorRow, this.cursorColumn)
-  //     this.board[this.cursorRow][this.cursorColumn].sourceCell = source          // recive destination and place current cursor loc in there
-  // }
-
   markShortestPath (row:number, column:number) {
     this.board[row][column].shortestPath = true                //update display state
-    let id:string = this.getId(row,column)
+    let id:string = this.getId(row, column)
     document.getElementById(id).classList.add('shortest-path')
   }
 
   moveCursor(destinationRow:number, destinationColumn:number){
     this.board[this.cursorRow][this.cursorColumn].hasCursor = false    //update view state and 
-    let cursorId:string = this.getId(this.cursorRow,this.cursorColumn) //update view CSS
+    let cursorId:string = this.getId(this.cursorRow, this.cursorColumn) //update view CSS
     document.getElementById(cursorId).classList.remove('has-cursor')   //to remove previous cursor location
     this.cursorColumn = destinationColumn   //change the cursor location
     this.cursorRow = destinationRow         // 
     this.board[destinationRow][destinationColumn].hasCursor = true     //update view state and
-    cursorId = this.getId(this.cursorRow,this.cursorColumn)            //update view CSS
+    cursorId = this.getId(this.cursorRow, this.cursorColumn)            //update view CSS
     document.getElementById(cursorId).classList.add('has-cursor')             //to reflect new cursor location
     //console.log('currentcursorRow',this.cursorRow,'currentcursorColumn:',this.cursorColumn)
   }
 
   knockoutWalls(direction:string){
-    console.log('at knockoutWalls','requesteddirection:',direction)
+    console.log('at knockoutWalls', 'requesteddirection:', direction)
     switch (direction) {
       case 'down':
         this.board[this.cursorRow][this.cursorColumn].wallDown = false

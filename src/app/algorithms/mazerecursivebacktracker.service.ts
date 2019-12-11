@@ -26,14 +26,11 @@ export class MazerecursivebacktrackerService {
     })
   }
   
-  async onFireoffAlgo(){
-//  board must have already been created, Must have stack initialized, Need check for valid start&end position
-   
+  async onFireoffAlgo(){         //  board must have already been created, Must have stack initialized, Need check for valid start&end position
     this.algoFinished = false
     while (!this.algoFinished) {                            // step algo until maze generation is complete
       await this._stepAlgo()
       await this._delayTimer()
-      //this.displayControl.redrawBoard()
       console.log('---single algo step complete---')
     }
   }
@@ -42,7 +39,7 @@ export class MazerecursivebacktrackerService {
     let cursorId:string = this.displayControl.cursorRow.toString() + this.displayControl.cursorColumn.toString(); 
     let chosenDirection:string = 'none'
     while (chosenDirection === 'none') {
-      chosenDirection = this._chooseMove(); console.log(chosenDirection)
+      chosenDirection = this._chooseMove();
       if (chosenDirection === 'none') { 
         this._backTrack()
         await this._delayTimer()
@@ -83,7 +80,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
+    if (cell.visited || cell.blocked || onStack) { return false }
     else return true
   }
   
@@ -93,7 +90,7 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
+    if (cell.visited || cell.blocked || onStack) { return false }
     else return true
   }
   
@@ -104,17 +101,17 @@ export class MazerecursivebacktrackerService {
     this.stack.forEach(stackItem=>{        //check if id is on stack
       if (stackItem === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
+    if (cell.visited || cell.blocked || onStack) { return false }
     else return true
   }
 
   private _checkUp(){
     let onStack:boolean = false
     let cell = this.displayControl.board[this.displayControl.cursorRow - 1][this.displayControl.cursorColumn]
-    this.stack.forEach(item=>{        //check if id is on stack
+    this.stack.forEach(item=>{             //check if id is on stack
       if (item === cell.id) {onStack=true}
     })   
-    if ( (cell.visited)||(cell.blocked)||(onStack) ) {return false}
+    if (cell.visited || cell.blocked || onStack) { return false }
     else return true
   }
 
@@ -145,7 +142,7 @@ export class MazerecursivebacktrackerService {
     this.displayControl.markVisited(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     const poppedLocation:number[] = this._popStack()
     if (this.stack.length === 0) {console.log('mazecomplete'); this.algoFinished = true; return}       //maze is complete
-    this.displayControl.moveCursor(poppedLocation[0],poppedLocation[1])   //set master cursor position to stackpop position
+    this.displayControl.moveCursor(poppedLocation[0], poppedLocation[1])   //set master cursor position to stackpop position
   }
 
   private _popStack () {
@@ -153,7 +150,7 @@ export class MazerecursivebacktrackerService {
     const poppedLocation:number[] = this.displayControl.getRowColumn(poppedId)
     //this.displayControl.board[poppedRowColumn[0]][poppedRowColumn[1]].onStack = false  //update display state
     //document.getElementById(poppedId).classList.remove('on-stack') //update display element 
-    this.displayControl.markOffStack(poppedLocation[0],poppedLocation[1])
+    this.displayControl.markOffStack(poppedLocation[0], poppedLocation[1])
     return poppedLocation
   }
 
@@ -161,7 +158,7 @@ export class MazerecursivebacktrackerService {
     this.stack.push(id)
     const poppedRowColumn:number[] = this.displayControl.getRowColumn(id)
     //this.displayControl.board[poppedRowColumn[0]][poppedRowColumn[1]].onStack = true  //update display state
-    this.displayControl.markOnStack(poppedRowColumn[0],poppedRowColumn[1])
+    this.displayControl.markOnStack(poppedRowColumn[0], poppedRowColumn[1])
   }
 
 }
