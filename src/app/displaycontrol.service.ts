@@ -24,7 +24,7 @@ export class DisplaycontrolService {
     const location:number[] = []
     location[0] = Number(result[0])
     location[1] = Number(result[1])
-    return (location)                // return the row and column
+    return location                // return the row and column
   }
 
   initBoard() {
