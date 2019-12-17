@@ -136,8 +136,8 @@ export class DisplaycontrolService {
   markVisited (row:number, column:number) {
     this.board[this.cursorRow][this.cursorColumn].visited = true
     let id:string = this.getId(row, column)
-    //document.getElementById(id).classList.add('visited')
-    this.redrawBoard()
+    document.getElementById(id).classList.add('visited')
+    //this.redrawBoard()
   }
 
   markDiscovered (row:number, column:number) {
@@ -145,6 +145,7 @@ export class DisplaycontrolService {
      this.board[row][column].discovered = true               //update display state
      let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('discovered')
+     //this.redrawBoard()
   }
 
   markExplored (row:number, column:number) {
@@ -152,6 +153,7 @@ export class DisplaycontrolService {
      //this.redrawBoard()
      let id:string = this.getId(row, column)
      document.getElementById(id).classList.add('explored')
+     //this.redrawBoard()
   }
 
   markOffStack (row:number, column:number) {
@@ -159,13 +161,15 @@ export class DisplaycontrolService {
      //this.redrawBoard()
      let id:string = this.getId(row, column)
      document.getElementById(id).classList.remove('on-stack')
+     //this.redrawBoard()
   }
 
   markOnStack (row:number, column:number) {
      this.board[row][column].onStack = true                //update display state
      //this.redrawBoard()
      let id:string = this.getId(row, column)
-     document.getElementById(id).classList.add('on-stack')
+     //document.getElementById(id).classList.add('on-stack')
+     this.redrawBoard()
   }
 
   markBlocked (row:number, column:number) {

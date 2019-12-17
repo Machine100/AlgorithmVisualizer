@@ -4,21 +4,10 @@
     grid-template-rows: repeat(20, 15px);
     border-style: solid;
     border-color: lightcyan;
-    max-width: 350px;
+    max-width: 300px;
 }
-.button-panel-wrapper{
-    display: grid;
-    border-style: solid;
-    border-color: yellow;
-   max-width: 350px;
-}
-@keyframes fillIn {
-    from {
-    }
-    to {
-        background-color: blue;
-    }
-}
+
+
 .grid-item{
     border-color: grey;
 }
@@ -41,19 +30,19 @@
     background-color: darkgray;
 }
 .on-stack{
-    background-color: cyan;
+    background-color: teal;
 }
 .visited{ 
-     background-color: blue; 
+     background-color: lightgoldenrodyellow; 
  }
 .discovered{ 
      background-color: purple; 
  }
 .explored{ 
-     background-color: teal;
+     background-color: cyan;
  }
 .shortest-path{
-    background-color: yellow;
+    background-color: yellowgreen;
 }
 .start-cell {
     background-color: lightgreen;

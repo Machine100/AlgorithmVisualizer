@@ -26,11 +26,6 @@ export class ButtonsComponent implements OnInit {
     this.displayControl.redrawBoard()
   }
 
-  onStartStop() { }
-  onInitBreadth() { } 
-  onInitStack(){ }
-  onFindShortestPath(){ }
-  
   onStepBreadth() {
     this.breadthfirst.init()
     this.breadthfirst.runAlgo()

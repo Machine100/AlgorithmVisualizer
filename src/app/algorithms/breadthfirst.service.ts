@@ -35,7 +35,7 @@ export class BreadthfirstService {
       setTimeout( ()=> {
         console.log('delayTimer Resolved')
         resolve()
-      },0)                                      //set to 25 for production
+      },30)                                      //set to 25 for production
     })
   }
 
@@ -46,7 +46,7 @@ export class BreadthfirstService {
       //console.log ('traversalStack:', this.traversalStack)
       //console.log ('sourceStack:', this.sourceStack)
     }
-    await this.findShortestPath('2_6')          // this static value for testing. Eventually make it moveable.
+    await this.findShortestPath('2_2')    // this static value for testing. Eventually make it moveable. Algo solves from end node back to start.
     await this.markShortestPath()
   }
 
@@ -186,12 +186,14 @@ export class BreadthfirstService {
   findShortestPath (destinationCell:string) {                // given a destination node, trace it back to the source
     console.log('at shortestpath')
     let cursor:string = destinationCell
+    let failSafe:number = 0
     let keepgoing:boolean = true
     while (keepgoing) {                                      //starting at fromCell, find it's discoverer, push that into array, change next to current, 
       let discoverer:string = this._findDiscoverer(cursor)   // find discoverer of cell under cursor
       console.log('cursor:', cursor,' discoverer: ', discoverer )
       this.shortestPath.push(discoverer)                     // push that discoverer into sp array
       if (discoverer === 'end') { console.log('ending'); keepgoing = false; break }
+      if (failSafe > 700) { console.log('no solution. failsafe triggered.'); keepgoing = false; break}   //hacky way to prevent infinite loop errors
       cursor = discoverer                                    // move cursor:string to next node on shortest path 
     }
     console.log('Shortest Path Array:', this.shortestPath)
