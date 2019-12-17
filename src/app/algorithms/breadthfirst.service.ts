@@ -35,7 +35,7 @@ export class BreadthfirstService {
       setTimeout( ()=> {
         console.log('delayTimer Resolved')
         resolve()
-      },0)                                      //set to 25 for production
+      },35)                                      //set to 25 for production
     })
   }
 
@@ -187,11 +187,15 @@ export class BreadthfirstService {
     console.log('at shortestpath')
     let cursor:string = destinationCell
     let keepgoing:boolean = true
+    let noSolution:number = 0
     while (keepgoing) {                                      //starting at fromCell, find it's discoverer, push that into array, change next to current, 
       let discoverer:string = this._findDiscoverer(cursor)   // find discoverer of cell under cursor
       console.log('cursor:', cursor,' discoverer: ', discoverer )
       this.shortestPath.push(discoverer)                     // push that discoverer into sp array
       if (discoverer === 'end') { console.log('ending'); keepgoing = false; break }
+      ++noSolution
+      if (noSolution > 1000) { console.log('There is no solution'); keepgoing = false; break }   //hackish failsafe to prevent browser crash
+
       cursor = discoverer                                    // move cursor:string to next node on shortest path 
     }
     console.log('Shortest Path Array:', this.shortestPath)
@@ -208,7 +212,7 @@ export class BreadthfirstService {
   markShortestPath () {
     console.log('at markShortestPath()')
     this.shortestPath.forEach( (element) => {
-      if (!(element === 'end')) {                             // do not attempt to process the ending node
+      if (!(element === 'end')) {                             // do not process the ending node
         let elementRowColumn:number[] = this.displayControl.getRowColumn(element)
         this.displayControl.markShortestPath(elementRowColumn[0], elementRowColumn[1])
         console.log('loop in markShortestPath')
