@@ -86,10 +86,7 @@ export class BreadthfirstService {
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
     
     
-    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallDown ){
-      console.log('rejected for wall')
-      return
-    }
+
     
     
     console.log('for down, checing destination:',destinationRow,destinationColumn)
@@ -113,10 +110,7 @@ export class BreadthfirstService {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
         
-    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallRight ){
-      console.log('rejected for wall')
-      return
-    }
+
     
     console.log('for Right, checing destination:',destinationRow,destinationColumn)
     let cell = this.displayControl.board[destinationRow][destinationColumn]
@@ -139,10 +133,7 @@ export class BreadthfirstService {
     const cursorId:string = this.displayControl.getId(this.displayControl.cursorRow, this.displayControl.cursorColumn)
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
     
-    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallUp ){
-      console.log('rejected for wall')                   //these sections added to enable solving of maze.
-      return
-    }
+
 
     console.log('for up, checing destination:', destinationRow, destinationColumn)
     const cell = this.displayControl.board[destinationRow][destinationColumn]
@@ -166,10 +157,7 @@ export class BreadthfirstService {
     if (this.displayControl.board[destinationRow][destinationColumn].blocked) { console.log ('down rejected for block'); return } //check for blocked node
     
         
-    if( this.displayControl.board[this.displayControl.cursorRow][this.displayControl.cursorColumn].wallLeft ){
-      console.log('rejected for wall')
-      return
-    }
+
     
     console.log('for left, checing destination:',destinationRow,destinationColumn)
     const cell = this.displayControl.board[destinationRow][destinationColumn]
