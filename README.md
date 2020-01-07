@@ -1,7 +1,7 @@
 # AlgorithmVisualizer
 
-Live at endpoint:    http://algorithmvisualizer.s3-website-us-east-1.amazonaws.com
+Live at endpoint:    TBA
 
-Generate a maze and then find the shortest path solution using the breadth-first algorithm.
+Displays 2D matrix algorithms visually. Watch the pretty colors.
 
 Implemented using Typescript in the Angular framework.
